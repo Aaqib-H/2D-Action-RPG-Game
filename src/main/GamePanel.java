@@ -19,8 +19,8 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 	public final int tileSize = originalTileSize * scale; // 48x48 tile
 	public final int maxScreenCol = 16;
 	public final int maxScreenRow = 12; // 4:3 Ratio
-	public final int ScreenWidth = tileSize * maxScreenCol; // 768 pixels
-	public final int ScreenHeight = tileSize * maxScreenRow; // 576 pixels
+	public final int screenWidth = tileSize * maxScreenCol; // 768 pixels
+	public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
 	
 	
 	// WORLD SETTINGS
@@ -34,7 +34,7 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 	
 	//SYSTEM
 	TileManager tileM = new TileManager(this);
-	KeyHandler keyH = new KeyHandler();
+	KeyHandler keyH = new KeyHandler(this);
 	Sound music = new Sound();
 	Sound se = new Sound();
 	public CollisionSystem coll = new CollisionSystem(this);
@@ -47,11 +47,14 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 	public Player player = new Player(this, keyH);
 	public SuperObject obj[]= new SuperObject[10]; // 10 slots for objects
 	
-	
+	// GAME STATE
+	public int gameState;
+	public final int playState = 1;
+	public final int pauseState = 2;
 	
 	
 	public GamePanel() {
-		this.setPreferredSize(new Dimension(ScreenWidth, ScreenHeight));
+		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
 		this.setBackground(Color.black);
 		this.setDoubleBuffered(true);
 		this.addKeyListener(keyH);
@@ -62,7 +65,7 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 		
 		aSetter.setObject();
 		playMusic(0); // Theme Music
-		
+		gameState = playState;
 	}
 	
 	public void startGameThread() {
@@ -103,7 +106,12 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 	}
 	public void update() {
 		
+	if(gameState == playState) {
 		player.update();
+	}
+	if (gameState == pauseState){
+		
+	}
 		
 	}
 	public void paintComponent(Graphics g) {

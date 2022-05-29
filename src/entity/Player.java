@@ -18,7 +18,6 @@ public class Player extends Entity{
 	
 	public final int screenX;
 	public final int screenY;
-	public int hasKey = 0; // Key inventory
 	int strideTimer;
 	
 	public Player(GamePanel gp, KeyHandler keyH) {
@@ -26,8 +25,8 @@ public class Player extends Entity{
 		this.gp = gp;
 		this.keyH = keyH;
 		
-		screenX = gp.ScreenWidth / 2 - (gp.tileSize/2); // Subtract half a tile size for the actual center of the screen
-		screenY = gp.ScreenHeight / 2 - (gp.tileSize/2);
+		screenX = gp.screenWidth / 2 - (gp.tileSize/2); // Subtract half a tile size for the actual center of the screen
+		screenY = gp.screenHeight / 2 - (gp.tileSize/2);
 		
 		hitbox = new Rectangle(8, 16, 32, 32); // Create a rectangle inside of a player tile
 		hitboxDefaultX = hitbox.x;
@@ -138,41 +137,6 @@ public class Player extends Entity{
 		
 		if (i != 999) { // if some object is touched
 			
-			String objName = gp.obj[i].name;
-			
-			switch (objName) {
-			case "Key":
-				gp.playSE(1);
-				hasKey++;
-				gp.obj[i] = null; // Delete object from map
-				gp.ui.showMessage("You found a key!");
-				break;
-				
-			case "Door":
-				if (hasKey > 0) {
-					gp.playSE(3);
-					gp.obj[i] = null;
-					gp.ui.showMessage("Door unlocked!");
-					hasKey--;
-				}
-				else {
-					gp.ui.showMessage("You need a key!");
-				}
-				break;
-			
-			case "Boots":
-				gp.playSE(2);
-				speed += 2;
-				gp.obj[i] = null;
-				gp.ui.showMessage("Speed Up!");
-				break;
-			
-			case "Chest":
-				gp.ui.gameFinished = true;
-				gp.stopMusic();
-				gp.playSE(4);
-				break;
-			}
 		}		
 	}
 	
