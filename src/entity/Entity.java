@@ -16,7 +16,7 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	public int worldX, worldY; // Character position
 	public int speed; // Character speed
 	public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2; // Used to store images
-	public String direction;
+	public String direction = "down";
 	public int spriteCounter = 0;
 	public int spriteNum = 1;
 	// Variables for collision
@@ -26,7 +26,9 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	public int actionIntervalCounter = 0;
 	String dialogues[] = new String[20];
 	int dialogueIndex = 0;
-	
+	public BufferedImage image, image2, image3;
+	public String name;
+	public boolean collision = false;
 	
 	// ENTITY STATUS
 	

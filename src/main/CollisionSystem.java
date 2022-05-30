@@ -86,7 +86,7 @@ public class CollisionSystem {
 				case "up":
 					entity.hitbox.y -= entity.speed;
 					
-					if (entity.hitbox.intersects(gp.obj[i].hitbox)) { // Check if entity and player hitboxes are intersecting
+					if (entity.hitbox.intersects(gp.obj[i].hitbox)) { // Check if object and player hitboxes are intersecting
 						if (gp.obj[i].collision == true) { // if object is solid
 							entity.collisionOn = true;
 						}
@@ -99,7 +99,7 @@ public class CollisionSystem {
 				case "down":
 					entity.hitbox.y += entity.speed;
 					
-					if (entity.hitbox.intersects(gp.obj[i].hitbox)) { // Check if entity and player hitboxes are intersecting
+					if (entity.hitbox.intersects(gp.obj[i].hitbox)) {
 						if (gp.obj[i].collision == true) { 
 							entity.collisionOn = true;
 						}
@@ -112,7 +112,7 @@ public class CollisionSystem {
 				case "left":
 					entity.hitbox.x -= entity.speed;
 					
-					if (entity.hitbox.intersects(gp.obj[i].hitbox)) { // Check if entity and player hitboxes are intersecting
+					if (entity.hitbox.intersects(gp.obj[i].hitbox)) { 
 						if (gp.obj[i].collision == true) { 
 							entity.collisionOn = true;
 						}
@@ -125,7 +125,7 @@ public class CollisionSystem {
 				case "right":
 					entity.hitbox.x += entity.speed;
 					
-					if (entity.hitbox.intersects(gp.obj[i].hitbox)) { // Check if entity and player hitboxes are intersecting
+					if (entity.hitbox.intersects(gp.obj[i].hitbox)) { 
 						if (gp.obj[i].collision == true) { 
 							entity.collisionOn = true;
 						}
@@ -167,7 +167,7 @@ public class CollisionSystem {
 				case "up":
 					entity.hitbox.y -= entity.speed;
 					
-					if (entity.hitbox.intersects(target[i].hitbox)) { // Check if entity and player hitboxes are intersecting
+					if (entity.hitbox.intersects(target[i].hitbox)) { 
 
 						entity.collisionOn = true;
 						index = i;
@@ -177,7 +177,7 @@ public class CollisionSystem {
 				case "down":
 					entity.hitbox.y += entity.speed;
 					
-					if (entity.hitbox.intersects(target[i].hitbox)) { // Check if entity and player hitboxes are intersecting
+					if (entity.hitbox.intersects(target[i].hitbox)) {
 					
 						entity.collisionOn = true;
 						index = i;
@@ -187,7 +187,7 @@ public class CollisionSystem {
 				case "left":
 					entity.hitbox.x -= entity.speed;
 					
-					if (entity.hitbox.intersects(target[i].hitbox)) { // Check if entity and player hitboxes are intersecting
+					if (entity.hitbox.intersects(target[i].hitbox)) {
 						
 						entity.collisionOn = true;
 						index = i;	
@@ -197,7 +197,7 @@ public class CollisionSystem {
 				case "right":
 					entity.hitbox.x += entity.speed;
 					
-					if (entity.hitbox.intersects(target[i].hitbox)) { // Check if entity and player hitboxes are intersecting
+					if (entity.hitbox.intersects(target[i].hitbox)) {
 						
 						entity.collisionOn = true;	
 						index = i;
@@ -239,7 +239,7 @@ public class CollisionSystem {
 		case "down":
 			entity.hitbox.y += entity.speed;
 			
-			if (entity.hitbox.intersects(gp.player.hitbox)) { // Check if entity and player hitboxes are intersecting
+			if (entity.hitbox.intersects(gp.player.hitbox)) {
 			
 				entity.collisionOn = true;
 			}
@@ -248,7 +248,7 @@ public class CollisionSystem {
 		case "left":
 			entity.hitbox.x -= entity.speed;
 			
-			if (entity.hitbox.intersects(gp.player.hitbox)) { // Check if entity and player hitboxes are intersecting
+			if (entity.hitbox.intersects(gp.player.hitbox)) {
 				
 				entity.collisionOn = true;
 			}
@@ -257,7 +257,7 @@ public class CollisionSystem {
 		case "right":
 			entity.hitbox.x += entity.speed;
 			
-			if (entity.hitbox.intersects(gp.player.hitbox)) { // Check if entity and player hitboxes are intersecting
+			if (entity.hitbox.intersects(gp.player.hitbox)) { 
 				
 				entity.collisionOn = true;	
 			}
