@@ -9,7 +9,7 @@ import main.UtilityTool;
 
 public class SuperObject { // Super class of all object classes
 	
-	public BufferedImage image;
+	public BufferedImage image, image2, image3;
 	public String name;
 	public boolean collision = false;
 	public int worldX, worldY;

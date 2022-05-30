@@ -27,6 +27,12 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	String dialogues[] = new String[20];
 	int dialogueIndex = 0;
 	
+	
+	// ENTITY STATUS
+	
+	public int maxLife;
+	public int life;
+	
 	public Entity(GamePanel gp) {
 		
 		this.gp = gp;
