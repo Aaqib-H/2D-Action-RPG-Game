@@ -23,6 +23,7 @@ public class UI {
 	public String message = "";
 	int messageTimer = 0;
 	public String currentDialogue = "";
+	public int commandNum = 0;
 	
 	public UI (GamePanel gp) {
 		
@@ -52,6 +53,12 @@ public class UI {
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2.setColor(Color.WHITE);
 		
+		// TITLE STATE
+		if(gp.gameState == gp.titleState) {
+			drawTitleScreen();
+		}
+		
+		
 		// PLAY STATE
 		if(gp.gameState == gp.playState) {
 			
@@ -66,6 +73,60 @@ public class UI {
 			drawDialogueScreen();
 		}
 	}
+	
+	public void drawTitleScreen() {
+	
+		// BACKGROUND COLOR
+		g2.setColor(Color.DARK_GRAY);
+		g2.fillRect(0, 0, gp.screenWidth, gp.screenHeight);
+		
+		// TITLE NAME
+		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96F));
+		String text = "Blue Boy Adventure";
+		int x = getXForCenteredText(text);
+		int y = gp.tileSize * 3;
+		
+		// SHADOW
+		Color c = new Color(0, 0, 0, 210);
+		g2.setColor(c);
+		g2.drawString(text, x+5, y+5);
+		
+		// TITLE COLOR
+		g2.setColor(Color.CYAN);
+		g2.drawString(text, x, y);
+		
+		// TITLE IMAGE
+		x = gp.screenWidth/2 - (gp.tileSize*3)/2;
+		y += gp.tileSize * 2;
+		g2.drawImage(gp.player.down1, x, y, gp.tileSize*3, gp.tileSize*3, null);
+		
+		// MENU
+		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 48F));
+		text = "NEW GAME";
+		x = getXForCenteredText(text);
+		y += gp.tileSize*4;
+		g2.drawString(text, x, y);
+		if(commandNum == 0) {
+			g2.drawString(">", x-gp.tileSize/2, y);
+		}
+		text = "LOAD GAME";
+		x = getXForCenteredText(text);
+		y += gp.tileSize;
+		g2.drawString(text, x, y);
+		if(commandNum == 1) {
+			g2.drawString(">", x-gp.tileSize/2, y);
+		}
+		
+		text = "QUIT";
+		x = getXForCenteredText(text);
+		y += gp.tileSize;
+		g2.drawString(text, x, y);
+		if(commandNum == 2) {
+			g2.drawString(">", x-gp.tileSize/2, y);
+		}
+		
+	}
+	
 	public void drawPauseScreen() {
 		
 		String text = "PAUSED";

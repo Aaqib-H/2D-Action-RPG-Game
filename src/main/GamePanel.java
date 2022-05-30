@@ -51,6 +51,7 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 	
 	// GAME STATE
 	public int gameState;
+	public final int titleState = 0;
 	public final int playState = 1;
 	public final int pauseState = 2;
 	public final int dialogueState = 3;
@@ -68,8 +69,8 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 		
 		aSetter.setObject();
 		aSetter.setNPC();
-		playMusic(0); // Theme Music
-		gameState = playState;
+		//playMusic(0); // Theme Music
+		gameState = titleState;
 	}
 	
 	public void startGameThread() {
@@ -141,32 +142,36 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 		
 		
 		
-		
-		// TILE
-		tileM.draw(g2);
-		
-		// OBJECT
-		for (int i = 0; i < obj.length; i++) { // Iterate through objects
+		// TITLE SCREEN
+		if(gameState == titleState) {
+			ui.draw(g2);
+		}
+
+		else {
+			// TILE
+			tileM.draw(g2);
 			
-			if (obj[i] != null) { // Check if slot is empty, to avoid NullPointer error
-				obj[i].draw(g2, this);
+			// OBJECT
+			for (int i = 0; i < obj.length; i++) { // Iterate through objects
+				
+				if (obj[i] != null) { // Check if slot is empty, to avoid NullPointer error
+					obj[i].draw(g2, this);
+				}
 			}
-		}
-		
-		// NPC
-		for(int i = 0; i < npc.length; i++) {
-			if(npc[i] != null) {
-				npc[i].draw(g2);
+			
+			// NPC
+			for(int i = 0; i < npc.length; i++) {
+				if(npc[i] != null) {
+					npc[i].draw(g2);
+				}
 			}
+			 
+			// PLAYER
+			player.draw(g2);
+			
+			// UI
+			ui.draw(g2);
 		}
-		 
-		// PLAYER
-		player.draw(g2);
-		
-		// UI
-		ui.draw(g2);
-		
-		
 		
 		
 		
@@ -178,7 +183,6 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 			g2.drawString("Draw Time: " + passed, 10, 400);
 			System.out.println("Draw time: " + passed);
 		}
-		
 		g2.dispose();
 	}
 	
