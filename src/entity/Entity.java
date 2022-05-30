@@ -24,6 +24,8 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	public int hitboxDefaultX, hitboxDefaultY;
 	public boolean collisionOn = false;
 	public int actionIntervalCounter = 0;
+	String dialogues[] = new String[20];
+	int dialogueIndex = 0;
 	
 	public Entity(GamePanel gp) {
 		
@@ -31,6 +33,31 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	}
 	
 	public void setAction() {}
+	public void speak() {
+		
+		if(dialogues[dialogueIndex] == null) {
+			dialogueIndex = 0;
+		}
+		gp.ui.currentDialogue = dialogues[dialogueIndex];
+		dialogueIndex++;
+		
+		// Make NPC face player when speaking
+		switch(gp.player.direction) {
+		
+		case "up":
+			direction = "down";
+			break;
+		case "down":
+			direction = "up";
+			break;
+		case "left":
+			direction = "right";
+			break;
+		case "right":
+			direction = "left";
+			break;
+		}
+	}
 	
 	public void update() {
 		
