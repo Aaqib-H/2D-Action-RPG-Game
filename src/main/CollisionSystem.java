@@ -145,4 +145,128 @@ public class CollisionSystem {
 		
 		return index; // Return the index of the object
 	}
+	
+	// Check if Player is colliding with ENTITY
+	public int checkEntityCollision(Entity entity, Entity[] target) {
+		
+		int index = 999; // Variable to store index of the object
+		
+		for (int i = 0; i < target.length; i++) { // Iterate through objects
+			
+			if (target[i] != null) {
+				
+				// Get entity's hitbox position on the map
+				entity.hitbox.x = entity.worldX + entity.hitbox.x;
+				entity.hitbox.y = entity.worldY + entity.hitbox.y;
+				
+				// Get the object's hitbox position on the map
+				target[i].hitbox.x = target[i].worldX + target[i].hitbox.x;
+				target[i].hitbox.y = target[i].worldY + target[i].hitbox.y;
+				
+				switch (entity.direction) {
+				case "up":
+					entity.hitbox.y -= entity.speed;
+					
+					if (entity.hitbox.intersects(target[i].hitbox)) { // Check if entity and player hitboxes are intersecting
+
+						entity.collisionOn = true;
+						index = i;
+					}
+					break;
+					
+				case "down":
+					entity.hitbox.y += entity.speed;
+					
+					if (entity.hitbox.intersects(target[i].hitbox)) { // Check if entity and player hitboxes are intersecting
+					
+						entity.collisionOn = true;
+						index = i;
+					}
+					break;
+					
+				case "left":
+					entity.hitbox.x -= entity.speed;
+					
+					if (entity.hitbox.intersects(target[i].hitbox)) { // Check if entity and player hitboxes are intersecting
+						
+						entity.collisionOn = true;
+						index = i;	
+					}
+					break;
+					
+				case "right":
+					entity.hitbox.x += entity.speed;
+					
+					if (entity.hitbox.intersects(target[i].hitbox)) { // Check if entity and player hitboxes are intersecting
+						
+						entity.collisionOn = true;	
+						index = i;
+					}
+					break;
+				}
+				// Reset before next iteration
+				entity.hitbox.x = entity.hitboxDefaultX; 
+				entity.hitbox.y = entity.hitboxDefaultY;
+				target[i].hitbox.x = target[i].hitboxDefaultX;
+				target[i].hitbox.y = target[i].hitboxDefaultY;
+			}
+		}
+		
+		return index; // Return the index of the object
+	}
+	
+	// Check if Entity is colliding with PLAYER
+	public void checkPlayerCollision(Entity entity) {
+		
+		// Get entity's hitbox position on the map
+		entity.hitbox.x = entity.worldX + entity.hitbox.x;
+		entity.hitbox.y = entity.worldY + entity.hitbox.y;
+		
+		// Get the object's hitbox position on the map
+		gp.player.hitbox.x = gp.player.worldX + gp.player.hitbox.x;
+		gp.player.hitbox.y = gp.player.worldY + gp.player.hitbox.y;
+		
+		switch (entity.direction) {
+		case "up":
+			entity.hitbox.y -= entity.speed;
+			
+			if (entity.hitbox.intersects(gp.player.hitbox)) { // Check if entity and player hitboxes are intersecting
+
+				entity.collisionOn = true;
+			}
+			break;
+			
+		case "down":
+			entity.hitbox.y += entity.speed;
+			
+			if (entity.hitbox.intersects(gp.player.hitbox)) { // Check if entity and player hitboxes are intersecting
+			
+				entity.collisionOn = true;
+			}
+			break;
+			
+		case "left":
+			entity.hitbox.x -= entity.speed;
+			
+			if (entity.hitbox.intersects(gp.player.hitbox)) { // Check if entity and player hitboxes are intersecting
+				
+				entity.collisionOn = true;
+			}
+			break;
+			
+		case "right":
+			entity.hitbox.x += entity.speed;
+			
+			if (entity.hitbox.intersects(gp.player.hitbox)) { // Check if entity and player hitboxes are intersecting
+				
+				entity.collisionOn = true;	
+			}
+			break;
+		}
+		// Reset before next iteration
+		entity.hitbox.x = entity.hitboxDefaultX; 
+		entity.hitbox.y = entity.hitboxDefaultY;
+		gp.player.hitbox.x = gp.player.hitboxDefaultX;
+		gp.player.hitbox.y = gp.player.hitboxDefaultY;
+	}
 }
