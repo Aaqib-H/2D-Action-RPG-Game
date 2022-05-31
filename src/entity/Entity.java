@@ -24,11 +24,14 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	public int hitboxDefaultX, hitboxDefaultY;
 	public boolean collisionOn = false;
 	public int actionIntervalCounter = 0;
+	public boolean invincible = false;
+	public int invincibleCounter = 0;
 	String dialogues[] = new String[20];
 	int dialogueIndex = 0;
 	public BufferedImage image, image2, image3;
 	public String name;
 	public boolean collision = false;
+	public int type; // 0- player, 1- npc, 2- monster
 	
 	// ENTITY STATUS
 	
@@ -74,8 +77,16 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 		collisionOn = false;
 		gp.coll.checkTileCollision(this);
 		gp.coll.checkObjectCollision(this, false);
-		gp.coll.checkPlayerCollision(this);
+		gp.coll.checkEntityCollision(this, gp.npc);
+		gp.coll.checkEntityCollision(this, gp.monster);
+		boolean contactPlayer = gp.coll.checkPlayerCollision(this);
 		
+		if(this.type == 2 && contactPlayer == true) { // if monster
+			if(gp.player.invincible == false) {
+				gp.player.life -= 1;
+				gp.player.invincible = true;
+			}
+		}
 		// IF COLLISION IS FALSE, ENTITY CAN MOVE
 		if (collisionOn == false) {
 			switch (direction) {
