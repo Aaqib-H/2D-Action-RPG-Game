@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener{
 	
-	public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed;
+	public boolean upPressed, downPressed, leftPressed, rightPressed, enterPressed, fPressed;
 	boolean checkDrawTime = false;
 	
 	GamePanel gp;
@@ -54,7 +54,7 @@ public class KeyHandler implements KeyListener{
 		}
 		
 		// PLAY STATE
-		if(gp.gameState == gp.playState){
+		else if(gp.gameState == gp.playState){
 			
 			if(code == KeyEvent.VK_W) {
 				upPressed = true;
@@ -119,7 +119,6 @@ public class KeyHandler implements KeyListener{
 		if(code == KeyEvent.VK_D) {
 			rightPressed = false;
 		}
-		
 	}
 
 	

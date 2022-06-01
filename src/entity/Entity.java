@@ -1,5 +1,6 @@
 package entity;
 
+import java.awt.AlphaComposite;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -13,31 +14,39 @@ import main.UtilityTool;
 public class Entity { // Abstract Superclass for players. monsters and NPCs
 	
 	GamePanel gp;
-	public int worldX, worldY; // Character position
-	public int speed; // Character speed
+	
 	public BufferedImage up1, up2, down1, down2, left1, left2, right1, right2; // Used to store images
-	public String direction = "down";
-	public int spriteCounter = 0;
-	public int spriteNum = 1;
-	// Variables for collision
-	public Rectangle hitbox = new Rectangle(0, 0, 48, 48);
-	public int hitboxDefaultX, hitboxDefaultY;
-	public boolean collisionOn = false;
-	public int actionIntervalCounter = 0;
-	public boolean invincible = false;
-	public int invincibleCounter = 0;
-	String dialogues[] = new String[20];
-	int dialogueIndex = 0;
+	public BufferedImage attackUp1, attackUp2, attackDown1, attackDown2, attackLeft1, attackLeft2, attackRight1, attackRight2;
 	public BufferedImage image, image2, image3;
-	public String name;
+	public Rectangle hitbox = new Rectangle(0, 0, 48, 48);
+	public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
+	public int hitboxDefaultX, hitboxDefaultY;
 	public boolean collision = false;
+	String dialogues[] = new String[20];
+	
+	// STATE
+	public int worldX, worldY; // Character position
+	public String direction = "down";
+	public int spriteNum = 1;
+	int dialogueIndex = 0;
+	public boolean collisionOn = false;
+	public boolean invincible = false;
+	public boolean attacking = false;
+	
+	// COUNTERS
+	public int spriteCounter = 0;
+	public int actionIntervalCounter = 0;
+	public int invincibleCounter = 0;
+	
+	// CHARACTER ATTRIBUTES
 	public int type; // 0- player, 1- npc, 2- monster
-	
-	// ENTITY STATUS
-	
+	public String name;
+	public int speed; // Character speed
 	public int maxLife;
 	public int life;
 	
+	
+	// ENTITY STATUS
 	public Entity(GamePanel gp) {
 		
 		this.gp = gp;
@@ -111,6 +120,14 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 			}
 			spriteCounter = 0;
 		}
+		
+		if(invincible == true) {
+			invincibleCounter++;
+			if(invincibleCounter > 30) {
+				invincible = false;
+				invincibleCounter = 0;
+			}
+		}
 	}
 	
 	public void draw(Graphics2D g2) {
@@ -128,54 +145,46 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 			
 			switch (direction) {
 			case "up":
-				if (spriteNum == 1) {
-					image = up1;
-				}
-				if (spriteNum == 2) {
-					image = up2;
-				}
+				if (spriteNum == 1) {image = up1;}
+				if (spriteNum == 2) {image = up2;}
 				break;
 				
 			case "down":
-				if (spriteNum == 1) {
-					image = down1;
-				}
-				if (spriteNum == 2) {
-					image = down2;
-				}
+				if (spriteNum == 1) {image = down1;}
+				if (spriteNum == 2) {image = down2;}
 				break;
 				
 			case "left":
-				if (spriteNum == 1) {
-					image = left1;
-				}
-				if (spriteNum == 2) {
-					image = left2;
-				}
+				if (spriteNum == 1) {image = left1;}
+				if (spriteNum == 2) {image = left2;}
 				break;
 				
 			case "right":
-				if (spriteNum == 1) {
-					image = right1;
-				}
-				if (spriteNum == 2) {
-					image = right2;
-				}
+				if (spriteNum == 1) {image = right1;}
+				if (spriteNum == 2) {image = right2;}
 				break;
 			}
 			
+			// Invincibility effect
+			if(invincible == true) {
+				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4F)); // 30% transparent
+			}
+			
 			g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+			
+			// Reset transparency
+			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1F)); // 0% transparent
 		}
 	}
 	
-	public BufferedImage setup(String imagePath) {
+	public BufferedImage setup(String imagePath, int width, int height) {
 		
 		UtilityTool uTool = new UtilityTool();
 		BufferedImage image = null;
 		
 		try {
 			image = ImageIO.read(getClass().getResourceAsStream(imagePath+".png"));
-			image = uTool.scaledImage(image, gp.tileSize, gp.tileSize);
+			image = uTool.scaledImage(image, width, height);
 		}
 		catch(IOException e) {
 			e.printStackTrace();
