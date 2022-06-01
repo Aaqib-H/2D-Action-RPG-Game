@@ -47,9 +47,9 @@ public class NPC_OldMan extends Entity {
 	
 	public void setAction() { // Set character behavior / AI
 		
-		actionIntervalCounter++;
+		actionIntervalTimer++;
 		
-		if(actionIntervalCounter == 120) { // Interval is 120 frames or 2 seconds
+		if(actionIntervalTimer == 120) { // Interval is 120 frames or 2 seconds
 			Random rnd = new Random();
 			
 			int i = rnd.nextInt(100)+1; // Get random number from 1-100
@@ -67,7 +67,7 @@ public class NPC_OldMan extends Entity {
 			if(i > 75 && i <= 100 ) {
 				direction = "right";
 			}
-			actionIntervalCounter = 0;
+			actionIntervalTimer = 0;
 		}
 	}
 	

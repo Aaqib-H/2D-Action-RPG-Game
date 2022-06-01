@@ -137,15 +137,15 @@ public class Player extends Entity{
 			}
 			gp.keyH.enterPressed = false;
 			
-			spriteCounter++; // Making the sprite walk
-			if (spriteCounter > 12) { // Change player image every 12 frames
+			spriteTimer++; // Making the sprite walk
+			if (spriteTimer > 12) { // Change player image every 12 frames
 				if (spriteNum == 1) {
 					spriteNum = 2;
 				}
 				else if (spriteNum == 2) {
 					spriteNum = 1;
 				}
-				spriteCounter = 0;
+				spriteTimer = 0;
 			}	
 		}
 		else {
@@ -158,22 +158,22 @@ public class Player extends Entity{
 			spriteNum = 1;
 		}
 		if(invincible == true) {
-			invincibleCounter++;
-			if(invincibleCounter > 60) {
+			invincibilityTimer++;
+			if(invincibilityTimer > 60) {
 				invincible = false;
-				invincibleCounter = 0;
+				invincibilityTimer = 0;
 			}
 		}
 	}
 	
 	public void attack() {
 		
-		spriteCounter++;
+		spriteTimer++;
 		
-		if(spriteCounter <= 5) { // First 5 frames show image 1
+		if(spriteTimer <= 5) { // First 5 frames show image 1
 			spriteNum = 1;
 		}
-		if(spriteCounter > 5 && spriteCounter <= 25) { // Between 6 ~ 25 frames show image 2
+		if(spriteTimer > 5 && spriteTimer <= 25) { // Between 6 ~ 25 frames show image 2
 			spriteNum = 2;
 			
 			// Save player position while attacking
@@ -204,9 +204,9 @@ public class Player extends Entity{
 			hitbox.width = hitboxWidth;
 			hitbox.height = hitboxHeight;
 		}
-		if(spriteCounter > 25) {
+		if(spriteTimer > 25) {
 			spriteNum = 1;
-			spriteCounter = 0;
+			spriteTimer = 0;
 			attacking = false;
 		}
 	}
@@ -223,6 +223,7 @@ public class Player extends Entity{
 				gp.npc[i].speak();
 			}	
 			else {
+				gp.playSE(7);
 				attacking = true;			
 			}
 		}
@@ -232,6 +233,7 @@ public class Player extends Entity{
 		
 		if(i != 999) {
 			if(invincible == false) {
+				gp.playSE(6);
 				life -= 1;
 				invincible = true;
 			}
@@ -241,11 +243,13 @@ public class Player extends Entity{
 		
 		if(i != 999) {
 			if(gp.monster[i].invincible == false) {
+				gp.playSE(5);
 				gp.monster[i].life -= 1;
 				gp.monster[i].invincible = true;
+				gp.monster[i].reaction();
 				
 				if (gp.monster[i].life <= 0) {
-					gp.monster[i] = null;
+					gp.monster[i].dying = true;
 				}
 			}
 		}	

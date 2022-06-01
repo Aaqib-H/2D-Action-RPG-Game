@@ -1,6 +1,7 @@
 package entity;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -32,11 +33,16 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	public boolean collisionOn = false;
 	public boolean invincible = false;
 	public boolean attacking = false;
+	public boolean alive = true;
+	public boolean dying = false;
+	boolean hpBarOn = false;
 	
 	// COUNTERS
-	public int spriteCounter = 0;
-	public int actionIntervalCounter = 0;
-	public int invincibleCounter = 0;
+	public int spriteTimer = 0;
+	public int actionIntervalTimer = 0;
+	public int invincibilityTimer = 0;
+	int dyingTimer = 0;
+	int hpBarTimer;
 	
 	// CHARACTER ATTRIBUTES
 	public int type; // 0- player, 1- npc, 2- monster
@@ -53,6 +59,7 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	}
 	
 	public void setAction() {}
+	public void reaction() {}
 	public void speak() {
 		
 		if(dialogues[dialogueIndex] == null) {
@@ -92,6 +99,7 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 		
 		if(this.type == 2 && contactPlayer == true) { // if monster
 			if(gp.player.invincible == false) {
+				gp.playSE(6);
 				gp.player.life -= 1;
 				gp.player.invincible = true;
 			}
@@ -110,22 +118,22 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 				
 		}
 		
-		spriteCounter++; // Making the sprite walk
-		if (spriteCounter > 12) { // Change player image every 12 frames
+		spriteTimer++; // Making the sprite walk
+		if (spriteTimer > 12) { // Change player image every 12 frames
 			if (spriteNum == 1) {
 				spriteNum = 2;
 			}
 			else if (spriteNum == 2) {
 				spriteNum = 1;
 			}
-			spriteCounter = 0;
+			spriteTimer = 0;
 		}
 		
 		if(invincible == true) {
-			invincibleCounter++;
-			if(invincibleCounter > 30) {
+			invincibilityTimer++;
+			if(invincibilityTimer > 30) {
 				invincible = false;
-				invincibleCounter = 0;
+				invincibilityTimer = 0;
 			}
 		}
 	}
@@ -165,18 +173,66 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 				break;
 			}
 			
-			// Invincibility effect
+			
+			// Monster HP bar
+			if(type == 2 && hpBarOn == true) {
+				
+				double oneHealthUnit = (double)gp.tileSize/maxLife; // 1 HP unit = bar length/max lives
+				double hpBarValue = oneHealthUnit*life; // current HP value = 1 unit x currentLife 
+				
+				g2.setColor(new Color(35, 35, 35));
+				g2.fillRect(screenX-1, screenY-2, gp.tileSize+2, 5); // Outline
+				
+				g2.setColor(Color.GREEN);
+				g2.fillRect(screenX, screenY-1, (int)hpBarValue, 3); // Bar
+				
+				hpBarTimer++;
+				
+				if(hpBarTimer > 600) { // After 10 seconds bar disappears
+					hpBarTimer = 0;
+					hpBarOn = false;
+				}
+			}
+			
+			
+			// Player invincibility effect
 			if(invincible == true) {
-				g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4F)); // 30% transparent
+				hpBarOn = true;
+				hpBarTimer = 0;
+				changeAlpha(g2, 0.4F);
+			}
+			if(dying == true) {
+				dyingAnimation(g2);
 			}
 			
 			g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
 			
 			// Reset transparency
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1F)); // 0% transparent
+			changeAlpha(g2, 1F);
 		}
 	}
-	
+	public void dyingAnimation(Graphics2D g2) {
+		dyingTimer++;
+		
+		int i = 5;
+		
+		if (dyingTimer <= i) {changeAlpha(g2, 0F);} // 100% transparent
+		if (dyingTimer > i && dyingTimer <= i*2) {changeAlpha(g2, 1F);}  // 0% transparent
+		if (dyingTimer > i*2 && dyingTimer <= i*3) {changeAlpha(g2, 0F);}
+		if (dyingTimer > i*3 && dyingTimer <= i*4) {changeAlpha(g2, 1F);}
+		if (dyingTimer > i*4 && dyingTimer <= i*5) {changeAlpha(g2, 0F);}
+		if (dyingTimer > i*5 && dyingTimer <= i*6) {changeAlpha(g2, 1F);}
+		if (dyingTimer > i*6 && dyingTimer <= i*7) {changeAlpha(g2, 0F);}
+		if (dyingTimer > i*7 && dyingTimer <= i*8) {changeAlpha(g2, 1F);}
+		if(dyingTimer > i*8) {
+			dying = false;
+			alive = false;
+		}
+	}
+	public void changeAlpha(Graphics2D g2, float alphaValue) {
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue)); 
+
+	}
 	public BufferedImage setup(String imagePath, int width, int height) {
 		
 		UtilityTool uTool = new UtilityTool();

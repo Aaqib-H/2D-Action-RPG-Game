@@ -17,7 +17,7 @@ public class MON_Slime extends Entity{
 		type = 2;
 		name = "Slime";
 		speed = 1;
-		maxLife = 4;
+		maxLife = 20;
 		life = maxLife;
 		
 		hitbox.x = 3;
@@ -44,9 +44,9 @@ public class MON_Slime extends Entity{
 	
 	public void setAction() {
 		
-		actionIntervalCounter++;
+		actionIntervalTimer++;
 		
-		if(actionIntervalCounter == 120) { // Interval is 120 frames or 2 seconds
+		if(actionIntervalTimer == 120) { // Interval is 120 frames or 2 seconds
 			Random rnd = new Random();
 			
 			int i = rnd.nextInt(100)+1; // Get random number from 1-100
@@ -64,7 +64,19 @@ public class MON_Slime extends Entity{
 			if(i > 75 && i <= 100 ) {
 				direction = "right";
 			}
-			actionIntervalCounter = 0;
+			actionIntervalTimer = 0;
 		}
 	}
+	public void reaction(){
+		
+		actionIntervalTimer = 0;
+		
+		// Monster moves away from player
+		direction = gp.player.direction;
+	}
+	
+	
+	
+	
+	
 }
