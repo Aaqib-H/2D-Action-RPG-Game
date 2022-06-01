@@ -50,7 +50,22 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	public int speed; // Character speed
 	public int maxLife;
 	public int life;
+	public int level;
+	public int strength; // More strength = more damage dealt
+	public int dexterity; // More dexterity = less damage received
+	public int defense;
+	public int attack;
+	public int exp;
+	public int nextLvlExp;
+	public int coin;
+	public Entity currentWeapon;
+	public Entity currentShield;
+	// public Entity currentArmor; maybe
+	// public Entity currentSword; maybe
 	
+	// ITEM ATTRIBUTES
+	public int attackVal;
+	public int defenseVal;
 	
 	// ENTITY STATUS
 	public Entity(GamePanel gp) {

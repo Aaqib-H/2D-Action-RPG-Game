@@ -17,7 +17,7 @@ public class MON_Slime extends Entity{
 		type = 2;
 		name = "Slime";
 		speed = 1;
-		maxLife = 20;
+		maxLife = 4;
 		life = maxLife;
 		
 		hitbox.x = 3;
@@ -71,7 +71,7 @@ public class MON_Slime extends Entity{
 		
 		actionIntervalTimer = 0;
 		
-		// Monster moves away from player
+		// Slime moves away from player
 		direction = gp.player.direction;
 	}
 	

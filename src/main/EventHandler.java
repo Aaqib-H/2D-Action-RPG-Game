@@ -44,11 +44,9 @@ public class EventHandler {
 		}
 		
 		if(canTouchEvent == true) {
-			if (hit(27, 16, "right") == true) {damagePit(27, 16, gp.dialogueState);}
-			if (hit(23, 19, "any") == true) {damagePit(27, 16, gp.dialogueState);}
-
+			//if (hit(27, 16, "right") == true) {damagePit(27, 16, gp.dialogueState);}
 			if(hit(23, 12, "up") == true) {healingPool(23, 12, gp.dialogueState);}
-			//if(hit(27, 16, "right") == true) {teleport(gp.dialogueState);}
+			if(hit(27, 16, "right") == true) {teleport(gp.dialogueState);}
 		}
 	}
 	
@@ -92,8 +90,10 @@ public class EventHandler {
 		
 		if(gp.keyH.enterPressed == true) {
 			gp.gameState = gameState;
+			gp.player.attackCancel = true;
 			gp.ui.currentDialogue = "You drank some water. \nYou feel better.";
 			gp.player.life = gp.player.maxLife;
+			gp.playSE(2);
 		}
 		
 	}

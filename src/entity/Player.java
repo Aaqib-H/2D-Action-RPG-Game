@@ -8,6 +8,8 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Shield_Wood;
+import object.OBJ_Sword_Normal;
 
 
 public class Player extends Entity{
@@ -17,6 +19,7 @@ public class Player extends Entity{
 	public final int screenX;
 	public final int screenY;
 	int strideTimer;
+	public boolean attackCancel = false;
 	
 	public Player(GamePanel gp, KeyHandler keyH) {
 		
@@ -49,9 +52,25 @@ public class Player extends Entity{
 		speed = 4;
 		direction = "right";
 		
-		// PLAYER STATUS
+		// PLAYER STATS
+		level = 1;
 		maxLife = 8; // 4 hearts
 		life = maxLife;
+		strength = 1;
+		dexterity = 1;
+		exp = 0;
+		nextLvlExp = 5;
+		coin = 0;
+		currentWeapon = new OBJ_Sword_Normal(gp);
+		currentShield = new OBJ_Shield_Wood(gp);
+		attack = getAttackVal(); // Total attack value is determined by strength and weapon
+		defense = getDefenseVal(); // Total defense value is determined by dexterity and shield
+	}
+	public int getAttackVal() {
+		return attack = strength * currentWeapon.attackVal;
+	}
+	public int getDefenseVal() {
+		return defense = dexterity * currentShield.defenseVal;
 	}
 	public void getPlayerImage() {
 		
@@ -135,6 +154,13 @@ public class Player extends Entity{
 				}
 					
 			}
+			if(keyH.enterPressed == true && attackCancel == false) {
+				gp.playSE(7);
+				attacking = true;
+				spriteTimer = 0;
+			}
+			
+			attackCancel = false;
 			gp.keyH.enterPressed = false;
 			
 			spriteTimer++; // Making the sprite walk
@@ -219,13 +245,10 @@ public class Player extends Entity{
 	public void interactNPC(int i) {
 		if(gp.keyH.enterPressed == true) {
 			if (i != 999) { // if a NPC is touched
+				attackCancel = true;
 				gp.gameState = gp.dialogueState;
 				gp.npc[i].speak();
 			}	
-			else {
-				gp.playSE(7);
-				attacking = true;			
-			}
 		}
 	}
 	
