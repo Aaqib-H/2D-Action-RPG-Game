@@ -19,6 +19,9 @@ public class MON_Slime extends Entity{
 		speed = 1;
 		maxLife = 4;
 		life = maxLife;
+		attack = 2;
+		defense = 0;
+		exp = 2;
 		
 		hitbox.x = 3;
 		hitbox.y = 18;

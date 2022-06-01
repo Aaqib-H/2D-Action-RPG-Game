@@ -9,6 +9,8 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+
 import entity.Entity;
 import object.OBJ_Heart;
 
@@ -20,8 +22,8 @@ public class UI {
 	BufferedImage heart_full, heart_half, heart_blank;
 	public boolean gameFinished = false;
 	public boolean messageOn = false;
-	public String message = "";
-	int messageTimer = 0;
+	ArrayList<String> message = new ArrayList<>();
+	ArrayList<Integer> messageTimer = new ArrayList<>();
 	public String currentDialogue = "";
 	public int commandNum = 0;
 	
@@ -44,10 +46,10 @@ public class UI {
 		heart_half = heart.image2;
 		heart_blank = heart.image3;
 	}
-	public void showMessage(String text) {
+	public void addMessage(String text) {
 		
-		message = text;
-		messageOn = true;
+		message.add(text);
+		messageTimer.add(0);
 	}
 	public void draw(Graphics2D g2) {
 		
@@ -66,6 +68,7 @@ public class UI {
 		// PLAY STATE
 		if(gp.gameState == gp.playState) {
 			drawPlayerLife();
+			drawMessage();
 		}
 		// PAUSE STATE
 		if(gp.gameState == gp.pauseState) {
@@ -113,7 +116,35 @@ public class UI {
 			x += gp.tileSize;
 		}
 	}
-	public void drawTitleScreen() {
+	public void drawMessage() {
+		
+		int messageX = gp.tileSize/2;
+		int messageY = gp.tileSize*3;
+		
+		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 20F));
+		
+		for(int i = 0; i < message.size(); i++) {
+			
+			if(message.get(i) != null) {
+				
+				g2.setColor(Color.GRAY);
+				g2.drawString(message.get(i), messageX+2, messageY+2);
+				
+				g2.setColor(Color.WHITE);
+				g2.drawString(message.get(i), messageX, messageY);
+				
+				int counter = messageTimer.get(i) + 1; // messageTimer++
+				messageTimer.set(i, counter);
+				messageY += 40;
+				
+				if(messageTimer.get(i) > 120) {
+					message.remove(i);
+					messageTimer.remove(i);
+				}
+			}
+		}
+	}
+public void drawTitleScreen() {
 	
 		// BACKGROUND COLOR
 		g2.setColor(Color.DARK_GRAY);
