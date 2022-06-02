@@ -39,15 +39,11 @@ public class Player extends Entity{
 		hitboxDefaultX = hitbox.x;
 		hitboxDefaultY = hitbox.y;
 		
-		attackArea.width = 36;
-		attackArea.height = 36;
-		
 		setDefaultValues();
 		getPlayerImage();
 		getPlayerAttackImage();
 		setInventoryItem();
 	}
-	
 	
 	public void setDefaultValues() {
 		
@@ -72,7 +68,6 @@ public class Player extends Entity{
 		attack = getAttackVal(); // Total attack value is determined by strength and weapon
 		defense = getDefenseVal(); // Total defense value is determined by dexterity and shield
 	}
-	
 	public void setInventoryItem() {
 		
 		inventory.add(currentWeapon);
@@ -81,6 +76,7 @@ public class Player extends Entity{
 
 	}
 	public int getAttackVal() {
+		attackArea = currentWeapon.attackArea;
 		return attack = strength * currentWeapon.attackVal;
 	}
 	public int getDefenseVal() {
@@ -99,16 +95,27 @@ public class Player extends Entity{
 	}
 	public void getPlayerAttackImage() {
 		
-		attackUp1 = setup("/player/boy_attack_up_1", gp.tileSize, gp.tileSize*2);
-		attackUp2 = setup("/player/boy_attack_up_2", gp.tileSize, gp.tileSize*2);
-		attackDown1 = setup("/player/boy_attack_down_1", gp.tileSize, gp.tileSize*2);
-		attackDown2 = setup("/player/boy_attack_down_2", gp.tileSize, gp.tileSize*2);
-		attackLeft1 = setup("/player/boy_attack_left_1", gp.tileSize*2, gp.tileSize);
-		attackLeft2 = setup("/player/boy_attack_left_2", gp.tileSize*2, gp.tileSize);
-		attackRight1 = setup("/player/boy_attack_right_1", gp.tileSize*2, gp.tileSize);
-		attackRight2 = setup("/player/boy_attack_right_2", gp.tileSize*2, gp.tileSize);
+		if(currentWeapon.type == type_sword) {
+			attackUp1 = setup("/player/boy_attack_up_1", gp.tileSize, gp.tileSize*2);
+			attackUp2 = setup("/player/boy_attack_up_2", gp.tileSize, gp.tileSize*2);
+			attackDown1 = setup("/player/boy_attack_down_1", gp.tileSize, gp.tileSize*2);
+			attackDown2 = setup("/player/boy_attack_down_2", gp.tileSize, gp.tileSize*2);
+			attackLeft1 = setup("/player/boy_attack_left_1", gp.tileSize*2, gp.tileSize);
+			attackLeft2 = setup("/player/boy_attack_left_2", gp.tileSize*2, gp.tileSize);
+			attackRight1 = setup("/player/boy_attack_right_1", gp.tileSize*2, gp.tileSize);
+			attackRight2 = setup("/player/boy_attack_right_2", gp.tileSize*2, gp.tileSize);
+		}
+		if(currentWeapon.type == type_axe) {
+			attackUp1 = setup("/player/boy_axe_up_1", gp.tileSize, gp.tileSize*2);
+			attackUp2 = setup("/player/boy_axe_up_2", gp.tileSize, gp.tileSize*2);
+			attackDown1 = setup("/player/boy_axe_down_1", gp.tileSize, gp.tileSize*2);
+			attackDown2 = setup("/player/boy_axe_down_2", gp.tileSize, gp.tileSize*2);
+			attackLeft1 = setup("/player/boy_axe_left_1", gp.tileSize*2, gp.tileSize);
+			attackLeft2 = setup("/player/boy_axe_left_2", gp.tileSize*2, gp.tileSize);
+			attackRight1 = setup("/player/boy_axe_right_1", gp.tileSize*2, gp.tileSize);
+			attackRight2 = setup("/player/boy_axe_right_2", gp.tileSize*2, gp.tileSize);
+		}
 	}
-	
 	public void update() {
 		
 		if(attacking == true) {
@@ -205,7 +212,6 @@ public class Player extends Entity{
 			}
 		}
 	}
-	
 	public void attack() {
 		
 		spriteTimer++;
@@ -252,9 +258,45 @@ public class Player extends Entity{
 	}
 	public void pickUpObject(int i) {
 		
+		String text;
+		
 		if (i != 999) { // if some object is touched
-			
+			if(inventory.size() != maxInventorySize) { // if inventory not full
+				inventory.add(gp.obj[i]);
+				gp.playSE(1);
+				text = gp.obj[i].name+" added to inventory!";
+			}
+			else {
+				text = "Inventory full!";
+			}
+			gp.ui.addMessage(text);
+			gp.obj[i] = null;
 		}		
+	}
+	public void equipItem() {
+		int itemIndex = gp.ui.getInventoryItemIndex();
+		
+		if(itemIndex < inventory.size()) {
+			
+			Entity selectedItem = inventory.get(itemIndex);
+			
+			if(selectedItem.type == type_sword || selectedItem.type == type_axe) {
+				gp.playSE(10);
+				currentWeapon = selectedItem;
+				attack = getAttackVal();
+				getPlayerAttackImage(); // Sword or Axe
+			}
+			if(selectedItem.type == type_shield) {
+				gp.playSE(10);
+				currentShield = selectedItem;
+				defense = getDefenseVal();
+			}
+			if(selectedItem.type == type_consumable) {
+				gp.playSE(10);
+				selectedItem.use(this);
+				inventory.remove(itemIndex);
+			}
+		}
 	}
 	public void interactNPC(int i) {
 		if(gp.keyH.enterPressed == true) {
@@ -265,7 +307,6 @@ public class Player extends Entity{
 			}	
 		}
 	}
-	
 	public void contactMonster(int i) {
 		
 		if(i != 999) {

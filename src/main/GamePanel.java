@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -153,7 +154,7 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 		
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g; // Gives more control over graphics and makes it 2D
-		
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		// DEBUG
 		long drawStart = 0;
 		if(keyH.showDebug == true) {

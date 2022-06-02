@@ -45,7 +45,6 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	int hpBarTimer;
 	
 	// CHARACTER ATTRIBUTES
-	public int type; // 0- player, 1- npc, 2- monster
 	public String name;
 	public int speed; // Character speed
 	public int maxLife;
@@ -62,6 +61,16 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	public Entity currentShield;
 	// public Entity currentArmor; maybe
 	// public Entity currentSword; maybe
+	
+	// OBJECT TYPE
+	public int type; // 0- player, 1- NPC, 2- monster
+	public final int type_player = 0;
+	public final int type_npc = 1;
+	public final int type_monster = 2;
+	public final int type_sword = 3;
+	public final int type_axe = 4;
+	public final int type_shield = 5;
+	public final int type_consumable = 6;
 	
 	// ITEM ATTRIBUTES
 	public int attackVal;
@@ -101,7 +110,7 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 			break;
 		}
 	}
-	
+	public void use(Entity entity) {}
 	public void update() {
 		
 		setAction(); // if subclass has same method, it will take priority
@@ -113,7 +122,7 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 		gp.coll.checkEntityCollision(this, gp.monster);
 		boolean contactPlayer = gp.coll.checkPlayerCollision(this);
 		
-		if(this.type == 2 && contactPlayer == true) { // if monster
+		if(this.type == type_monster && contactPlayer == true) { // if monster
 			if(gp.player.invincible == false) {
 				gp.playSE(6);
 				
@@ -158,7 +167,6 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 			}
 		}
 	}
-	
 	public void draw(Graphics2D g2) {
 		
 		

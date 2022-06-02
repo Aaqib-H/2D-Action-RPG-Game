@@ -360,6 +360,18 @@ public void drawTitleScreen() {
 		// DRAW INVENTORY ITEMS
 		for(int i =0; i < gp.player.inventory.size(); i++) {
 			
+			// EQUIPPED ITEM CURSOR
+			if(gp.player.inventory.get(i) == gp.player.currentWeapon ||
+					gp.player.inventory.get(i) == gp.player.currentShield) {
+				
+				g2.setColor(Color.GRAY);
+				g2.fillRoundRect(slotX, slotY, gp.tileSize, gp.tileSize, 10, 10);
+				
+				g2.setColor(Color.YELLOW);
+				g2.setStroke(new BasicStroke(2)); //2  pixel outline
+				g2.drawRoundRect(slotX, slotY, gp.tileSize, gp.tileSize, 10, 10);
+			}
+			
 			g2.drawImage(gp.player.inventory.get(i).down1, slotX, slotY, null);
 			slotX += slotSize;
 			
@@ -383,8 +395,8 @@ public void drawTitleScreen() {
 		
 		// DESCRIPTION TEXT
 		int textX = dFrameX + 20;
-		int textY = dFrameY + gp.tileSize;
-		g2.setFont(g2.getFont().deriveFont(22F));
+		int textY = dFrameY + gp.tileSize-10;
+		g2.setFont(g2.getFont().deriveFont(20F));
 		
 		int itemIndex = getInventoryItemIndex();
 		
@@ -394,7 +406,7 @@ public void drawTitleScreen() {
 			
 			for(String line: gp.player.inventory.get(itemIndex).itemDescription.split("\n")) {
 				g2.drawString(line, textX, textY);
-				textY += 32;
+				textY += 30;
 			}
 		}
 	}
