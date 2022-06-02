@@ -66,6 +66,7 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	// ITEM ATTRIBUTES
 	public int attackVal;
 	public int defenseVal;
+	public String itemDescription = "";
 	
 	// ENTITY STATUS
 	public Entity(GamePanel gp) {
