@@ -13,13 +13,14 @@ import java.util.ArrayList;
 
 import entity.Entity;
 import object.OBJ_Heart;
+import object.OBJ_ManaCrystal;
 
 public class UI {
 	
 	GamePanel gp;
 	Graphics2D g2;
 	Font maruMonica;
-	BufferedImage heart_full, heart_half, heart_blank;
+	BufferedImage heart_full, heart_half, heart_blank, crystal_full, crystal_blank;
 	public boolean gameFinished = false;
 	public boolean messageOn = false;
 	ArrayList<String> message = new ArrayList<>();
@@ -47,6 +48,10 @@ public class UI {
 		heart_full = heart.image;
 		heart_half = heart.image2;
 		heart_blank = heart.image3;
+		
+		Entity crystal = new OBJ_ManaCrystal(gp);
+		crystal_full = crystal.image;
+		crystal_blank = crystal.image2;
 	}
 	public void addMessage(String text) {
 		
@@ -93,10 +98,10 @@ public class UI {
 	public void drawPlayerLife() {
 		
 		int x = gp.tileSize/2;
-		int y = gp.tileSize/2;
+		int y = gp.tileSize/3;
 		int i = 0;
 		
-		// MAX LIFE
+		// DRAW MAX LIFE
 		while(i < gp.player.maxLife/2) { // 1 heart 2 lives
 			g2.drawImage(heart_blank, x, y, null);
 			i++;
@@ -105,10 +110,10 @@ public class UI {
 		
 		// Reset
 		x = gp.tileSize/2;
-		y = gp.tileSize/2;
+		y = gp.tileSize/3;
 		i = 0;
 		
-		// CURRENT LIFE
+		// DRAW CURRENT LIFE
 		while(i < gp.player.life) { // 1 heart 2 lives
 			g2.drawImage(heart_half, x, y, null);
 			i++;
@@ -117,6 +122,30 @@ public class UI {
 			}
 			i++;
 			x += gp.tileSize;
+		}
+		
+		
+		
+		// DRAW MAX MANA
+		x = gp.tileSize/2;
+		y = (int) (gp.tileSize*1.5);
+		i = 0;
+		while(i < gp.player.maxMana) {
+			g2.drawImage(crystal_blank, x, y, null);
+			i++;
+			x += 35;
+			
+		}
+		
+		// DRAW CURRENT MANA
+		x = gp.tileSize/2;
+		y = (int) (gp.tileSize*1.5);
+		i = 0;
+		
+		while(i < gp.player.mana) {
+			g2.drawImage(crystal_full, x, y, null);
+			i++;
+			x += 35;
 		}
 	}
 	public void drawMessage() {
@@ -147,7 +176,7 @@ public class UI {
 			}
 		}
 	}
-public void drawTitleScreen() {
+	public void drawTitleScreen() {
 	
 		// BACKGROUND COLOR
 		g2.setColor(Color.DARK_GRAY);
@@ -246,12 +275,12 @@ public void drawTitleScreen() {
 		final int frameX = gp.tileSize;
 		final int frameY = gp.tileSize;
 		final int frameWidth = gp.tileSize*5;
-		final int frameHeight = gp.tileSize*10;
+		final int frameHeight = (int) (gp.tileSize*10.5);
 		drawSubWindow(frameX, frameY, frameWidth, frameHeight);
 		
 		//  TEXT
 		g2.setColor(Color.WHITE);
-		g2.setFont(g2.getFont().deriveFont(30F));
+		g2.setFont(g2.getFont().deriveFont(25F));
 		
 		int textX = frameX + 20;
 		int textY = frameY + gp.tileSize;
@@ -259,6 +288,8 @@ public void drawTitleScreen() {
 		
 		// STAT NAMES
 		g2.drawString("Life", textX, textY);
+		textY += lineHeight;
+		g2.drawString("Mana", textX, textY);
 		textY += lineHeight;
 		g2.drawString("Level", textX, textY);
 		textY += lineHeight;
@@ -291,6 +322,11 @@ public void drawTitleScreen() {
 		g2.drawString(val, textX, textY);
 		textY += lineHeight;
 
+		val = String.valueOf(gp.player.mana+"/"+gp.player.maxMana);
+		textX = getXForAlignRightText(val, tailX);
+		g2.drawString(val, textX, textY);
+		textY += lineHeight;
+		
 		val = String.valueOf(gp.player.level);
 		textX = getXForAlignRightText(val, tailX);
 		g2.drawString(val, textX, textY);

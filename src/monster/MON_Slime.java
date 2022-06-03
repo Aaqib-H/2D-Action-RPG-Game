@@ -4,6 +4,7 @@ import java.util.Random;
 
 import entity.Entity;
 import main.GamePanel;
+import object.OBJ_Rock;
 
 public class MON_Slime extends Entity{
 
@@ -22,6 +23,7 @@ public class MON_Slime extends Entity{
 		attack = 2;
 		defense = 0;
 		exp = 2;
+		projectile = new OBJ_Rock(gp);
 		
 		hitbox.x = 3;
 		hitbox.y = 18;
@@ -68,6 +70,12 @@ public class MON_Slime extends Entity{
 				direction = "right";
 			}
 			actionIntervalTimer = 0;
+		}
+		int i = new Random().nextInt(100)+1;
+		if(i > 99 && projectile.alive == false && projShotTimer == 30) {
+			projectile.shoot(worldX, worldY, direction, true, this);
+			gp.projectileList.add(projectile);
+			projShotTimer = 0;
 		}
 	}
 	public void reaction(){

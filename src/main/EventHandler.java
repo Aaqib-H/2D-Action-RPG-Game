@@ -93,6 +93,7 @@ public class EventHandler {
 			gp.player.attackCancel = true;
 			gp.ui.currentDialogue = "You drank some water. \nYou feel better.";
 			gp.player.life = gp.player.maxLife;
+			gp.player.mana = gp.player.maxMana;
 			gp.playSE(2);
 			gp.aSetter.setMonster();
 		}

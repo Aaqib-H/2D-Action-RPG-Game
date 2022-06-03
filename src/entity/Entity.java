@@ -51,7 +51,8 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	public int maxLife;
 	public int life;
 	public int maxMana;
-	public int mana; // Unit of energy
+	public int mana; // unit of magic
+	public int ammo;
 	public int level;
 	public int strength; // More strength = more damage dealt
 	public int dexterity; // More dexterity = less damage received
@@ -128,16 +129,7 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 		boolean contactPlayer = gp.coll.checkPlayerCollision(this);
 		
 		if(this.type == type_monster && contactPlayer == true) { // if monster
-			if(gp.player.invincible == false) {
-				gp.playSE(6);
-				
-				int damage = attack - gp.player.defense; 
-				if(damage < 0) {
-					damage = 0;
-				}
-				gp.player.life -= damage;
-				gp.player.invincible = true;
-			}
+			damagePlayer(attack);
 		}
 		// IF COLLISION IS FALSE, ENTITY CAN MOVE
 		if (collisionOn == false) {
@@ -170,6 +162,22 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 				invincible = false;
 				invincibilityTimer = 0;
 			}
+		}
+		if(projShotTimer < 30) {
+			projShotTimer++; 
+		}
+	}
+	public void damagePlayer(int attack) {
+		
+		if(gp.player.invincible == false) {
+			gp.playSE(6);
+			
+			int damage = attack - gp.player.defense; 
+			if(damage < 0) {
+				damage = 0;
+			}
+			gp.player.life -= damage;
+			gp.player.invincible = true;
 		}
 	}
 	public void draw(Graphics2D g2) {
