@@ -54,6 +54,7 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 	public Entity obj[]= new Entity[10]; // 10 slots for objects
 	public Entity npc[] = new Entity[10];
 	public Entity monster[] = new Entity[20];
+	public ArrayList<Entity> projectileList = new ArrayList<>();
 	ArrayList<Entity> entityList = new ArrayList<>();
 	
 	
@@ -81,12 +82,10 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 		//playMusic(0); // Theme Music
 		gameState = titleState;
 	}
-	
 	public void startGameThread() {
 		gameThread = new Thread(this); // Instantiate a thread and pass this class to Thread object
 		gameThread.start();
 	}
-
 	@Override
 	public void run() { // -> Game Loop = update >  repaint > repeat | Sleep Method
 		
@@ -142,7 +141,17 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 				}
 			}
 		}
-		
+		for(int i = 0; i < projectileList.size(); i++) {
+			if(projectileList.get(i) != null) {
+				if(projectileList.get(i).alive == true) {
+					projectileList.get(i).update();
+
+				}
+				if(projectileList.get(i).alive == false) {
+					projectileList.remove(i);
+				}
+			}
+		}
 		
 	}
 	if (gameState == pauseState){
@@ -192,6 +201,12 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 				}
 			}
 			
+			for(int i = 0; i < projectileList.size(); i++) {
+				if(projectileList.get(i) != null) {
+					entityList.add(projectileList.get(i));
+				}
+			}
+			
 			// SORT
 			Collections.sort(entityList, new Comparator<Entity>() {
 
@@ -237,7 +252,6 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 		}
 		g2.dispose();
 	}
-	
 	
 	// SOUND 
 	public void playMusic(int i) {

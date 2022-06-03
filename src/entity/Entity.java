@@ -37,10 +37,11 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	public boolean dying = false;
 	boolean hpBarOn = false;
 	
-	// COUNTERS
+	// TIMERS
 	public int spriteTimer = 0;
 	public int actionIntervalTimer = 0;
 	public int invincibilityTimer = 0;
+	public int projShotTimer = 0;
 	int dyingTimer = 0;
 	int hpBarTimer;
 	
@@ -49,6 +50,8 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	public int speed; // Character speed
 	public int maxLife;
 	public int life;
+	public int maxMana;
+	public int mana; // Unit of energy
 	public int level;
 	public int strength; // More strength = more damage dealt
 	public int dexterity; // More dexterity = less damage received
@@ -59,6 +62,7 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	public int coin;
 	public Entity currentWeapon;
 	public Entity currentShield;
+	public Projectile projectile;
 	// public Entity currentArmor; maybe
 	// public Entity currentSword; maybe
 	
@@ -76,6 +80,7 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	public int attackVal;
 	public int defenseVal;
 	public String itemDescription = "";
+	public int projectileUseCost;
 	
 	// ENTITY STATUS
 	public Entity(GamePanel gp) {
@@ -254,7 +259,6 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 		if (dyingTimer > i*6 && dyingTimer <= i*7) {changeAlpha(g2, 0F);}
 		if (dyingTimer > i*7 && dyingTimer <= i*8) {changeAlpha(g2, 1F);}
 		if(dyingTimer > i*8) {
-			dying = false;
 			alive = false;
 		}
 	}

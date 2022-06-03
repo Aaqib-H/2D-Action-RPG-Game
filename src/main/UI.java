@@ -155,7 +155,7 @@ public void drawTitleScreen() {
 		
 		// TITLE NAME
 		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 96F));
-		String text = "Blu's Adventure";
+		String text = "Red's Adventure";
 		int x = getXForCenteredText(text);
 		int y = gp.tileSize * 3;
 		
@@ -165,7 +165,7 @@ public void drawTitleScreen() {
 		g2.drawString(text, x+5, y+5);
 		
 		// TITLE COLOR
-		g2.setColor(Color.CYAN);
+		g2.setColor(Color.RED);
 		g2.drawString(text, x, y);
 		
 		// TITLE IMAGE

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Fireball;
 import object.OBJ_Key;
 import object.OBJ_Shield_Wood;
 import object.OBJ_Sword_Normal;
@@ -65,6 +66,7 @@ public class Player extends Entity{
 		coin = 0;
 		currentWeapon = new OBJ_Sword_Normal(gp);
 		currentShield = new OBJ_Shield_Wood(gp);
+		projectile = new OBJ_Fireball(gp);
 		attack = getAttackVal(); // Total attack value is determined by strength and weapon
 		defense = getDefenseVal(); // Total defense value is determined by dexterity and shield
 	}
@@ -204,12 +206,26 @@ public class Player extends Entity{
 			}
 			spriteNum = 1;
 		}
+		if(gp.keyH.projKeyPressed == true && projectile.alive == false && projShotTimer == 30) {
+			
+			projectile.shoot(worldX, worldY, direction, true, this);
+			
+			gp.projectileList.add(projectile);
+			
+			projShotTimer = 0;
+			
+			gp.playSE(11);
+		}
+		
 		if(invincible == true) {
 			invincibilityTimer++;
 			if(invincibilityTimer > 60) {
 				invincible = false;
 				invincibilityTimer = 0;
 			}
+		}
+		if(projShotTimer < 30) {
+			projShotTimer++;
 		}
 	}
 	public void attack() {
@@ -242,7 +258,7 @@ public class Player extends Entity{
 			
 			// Check monster collision with updated player position and hitbox
 			int monsterIndex = gp.coll.checkEntityCollision(this, gp.monster);
-			damageMonster(monsterIndex);
+			damageMonster(monsterIndex, attack);
 			
 			// After checking collision, restore original data
 			worldX = currentWorldX;
@@ -310,7 +326,7 @@ public class Player extends Entity{
 	public void contactMonster(int i) {
 		
 		if(i != 999) {
-			if(invincible == false) {
+			if(invincible == false && gp.monster[i].dying == false) {
 				gp.playSE(6);
 				
 				int damage = gp.monster[i].attack - defense;
@@ -322,7 +338,7 @@ public class Player extends Entity{
 			}
 		}
 	}
-	public void damageMonster(int i) {
+	public void damageMonster(int i, int attack) {
 		
 		if(i != 999) {
 			if(gp.monster[i].invincible == false) {
