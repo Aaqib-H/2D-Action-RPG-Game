@@ -120,6 +120,38 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	}
 	public void use(Entity entity) {}
 	public void checkDrop() {}
+	public Color getParticleColor() {
+		Color color = null;
+		return color;
+	}
+	public int getParticleSize() {
+		int size = 0; // 6 pixels
+		return size;
+	}
+	public int getParticleSpeed() {
+		int speed = 0; // How fast particles fly
+		return speed;
+	}
+	public int getParticleMaxLife() {
+		int maxLife = 0; // How long particles last
+		return maxLife;
+	}
+	public void generateParticles(Entity generator, Entity target) {
+		
+		Color color = generator.getParticleColor();
+		int size = generator.getParticleSize();
+		int speed = generator.getParticleSpeed();
+		int maxLife = generator.getParticleMaxLife();
+		
+		Particle p1 = new Particle(gp, generator, color, size, speed, maxLife, -2, -1); // -1,-1 particle flies towards top-left
+		Particle p2 = new Particle(gp, generator, color, size, speed, maxLife, 2, -1); // 1,-1 particle flies towards top-right
+		Particle p3 = new Particle(gp, generator, color, size, speed, maxLife, -2, 1); // -1,1 particle flies towards down-left
+		Particle p4 = new Particle(gp, generator, color, size, speed, maxLife, 2, 1); // 1,1 particle flies towards down-right
+		gp.particleList.add(p1);
+		gp.particleList.add(p2);
+		gp.particleList.add(p3);
+		gp.particleList.add(p4);
+	}
 	public void dropItem(Entity droppedItem) {
 		
 		for(int i = 0; i < gp.obj.length; i++) {

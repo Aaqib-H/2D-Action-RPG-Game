@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import main.GamePanel;
 import main.KeyHandler;
+import object.OBJ_Axe;
 import object.OBJ_Fireball;
 import object.OBJ_Key;
 import object.OBJ_Rock;
@@ -69,6 +70,7 @@ public class Player extends Entity{
 		nextLvlExp = 5;
 		coin = 0;
 		currentWeapon = new OBJ_Sword_Normal(gp);
+		
 		currentShield = new OBJ_Shield_Wood(gp);
 		projectile = new OBJ_Fireball(gp);
 		//projectile = new OBJ_Rock(gp);
@@ -80,7 +82,7 @@ public class Player extends Entity{
 		inventory.add(currentWeapon);
 		inventory.add(currentShield);
 		inventory.add(new OBJ_Key(gp));
-
+		inventory.add(new OBJ_Axe(gp));
 	}
 	public int getAttackVal() {
 		attackArea = currentWeapon.attackArea;
@@ -401,6 +403,9 @@ public class Player extends Entity{
 			gp.iTile[i].playSE();
 			gp.iTile[i].life--;
 			gp.iTile[i].invincible = true;
+			
+			generateParticles(gp.iTile[i], gp.iTile[i]);
+			
 			if(gp.iTile[i].life == 0) {
 				gp.iTile[i] = gp.iTile[i].getDestroyedImage();
 			}
