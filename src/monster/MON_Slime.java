@@ -4,6 +4,9 @@ import java.util.Random;
 
 import entity.Entity;
 import main.GamePanel;
+import object.OBJ_Coin_Gold;
+import object.OBJ_Heart;
+import object.OBJ_ManaCrystal;
 import object.OBJ_Rock;
 
 public class MON_Slime extends Entity{
@@ -85,9 +88,19 @@ public class MON_Slime extends Entity{
 		// Slime moves away from player
 		direction = gp.player.direction;
 	}
-	
-	
-	
-	
-	
+	public void checkDrop() {
+		
+		int i = new Random().nextInt(100)+1;
+		
+		// SET ITEM DROP
+		if(i < 50) { // 50%
+			dropItem(new OBJ_Coin_Gold(gp));
+		}
+		if(i >= 50 && i < 75) { // 25%
+			dropItem(new OBJ_Heart(gp));
+		}
+		if(i >= 75 && i < 100) { // 25%
+			dropItem(new OBJ_ManaCrystal(gp));
+		}
+	}
 }

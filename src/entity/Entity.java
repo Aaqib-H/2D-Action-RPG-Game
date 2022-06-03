@@ -76,8 +76,10 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	public final int type_axe = 4;
 	public final int type_shield = 5;
 	public final int type_consumable = 6;
+	public final int type_pickUp = 7;
 	
 	// ITEM ATTRIBUTES
+	public int value;
 	public int attackVal;
 	public int defenseVal;
 	public String itemDescription = "";
@@ -117,6 +119,18 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 		}
 	}
 	public void use(Entity entity) {}
+	public void checkDrop() {}
+	public void dropItem(Entity droppedItem) {
+		
+		for(int i = 0; i < gp.obj.length; i++) {
+			if(gp.obj[i] == null) {
+				gp.obj[i] = droppedItem;
+				gp.obj[i].worldX = worldX; // Location of dead entity
+				gp.obj[i].worldY = worldY;
+				break;
+			}
+		}
+	}
 	public void update() {
 		
 		setAction(); // if subclass has same method, it will take priority
@@ -247,7 +261,7 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 				dyingAnimation(g2);
 			}
 			
-			g2.drawImage(image, screenX, screenY, gp.tileSize, gp.tileSize, null);
+			g2.drawImage(image, screenX, screenY, null);
 			
 			// Reset transparency
 			changeAlpha(g2, 1F);

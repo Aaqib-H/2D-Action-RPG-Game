@@ -3,9 +3,12 @@ package main;
 import entity.NPC_OldMan;
 import monster.MON_Slime;
 import object.OBJ_Axe;
+import object.OBJ_Coin_Gold;
 import object.OBJ_Door;
 import object.OBJ_Elixir_Red;
+import object.OBJ_Heart;
 import object.OBJ_Key;
+import object.OBJ_ManaCrystal;
 import object.OBJ_Shield_New;
 
 
@@ -18,15 +21,15 @@ public class AssetSetter {
 	
 	public void setObject() {
 		int i = 0;
-		gp.obj[i] = new OBJ_Key(gp);
+		gp.obj[i] = new OBJ_Coin_Gold(gp);
 		gp.obj[i].worldX = gp.tileSize*25;
 		gp.obj[i].worldY = gp.tileSize*19;
 		i++;
-		gp.obj[i] = new OBJ_Key(gp);
+		gp.obj[i] = new OBJ_Coin_Gold(gp);
 		gp.obj[i].worldX = gp.tileSize*21;
 		gp.obj[i].worldY = gp.tileSize*19;
 		i++;
-		gp.obj[i] = new OBJ_Key(gp);
+		gp.obj[i] = new OBJ_Coin_Gold(gp);
 		gp.obj[i].worldX = gp.tileSize*21;
 		gp.obj[i].worldY = gp.tileSize*21;
 		i++;
@@ -44,6 +47,22 @@ public class AssetSetter {
 		i++;
 		gp.obj[i] = new OBJ_Elixir_Red(gp);
 		gp.obj[i].worldX = gp.tileSize*31;
+		gp.obj[i].worldY = gp.tileSize*21;
+		i++;
+		gp.obj[i] = new OBJ_Heart(gp);
+		gp.obj[i].worldX = gp.tileSize*29;
+		gp.obj[i].worldY = gp.tileSize*21;
+		i++;
+		gp.obj[i] = new OBJ_Heart(gp);
+		gp.obj[i].worldX = gp.tileSize*28;
+		gp.obj[i].worldY = gp.tileSize*21;
+		i++;
+		gp.obj[i] = new OBJ_ManaCrystal(gp);
+		gp.obj[i].worldX = gp.tileSize*27;
+		gp.obj[i].worldY = gp.tileSize*21;
+		i++;
+		gp.obj[i] = new OBJ_ManaCrystal(gp);
+		gp.obj[i].worldX = gp.tileSize*26;
 		gp.obj[i].worldY = gp.tileSize*21;
 	}
 	
@@ -81,6 +100,18 @@ public class AssetSetter {
 		i++;
 		gp.monster[i] = new MON_Slime(gp);
 		gp.monster[i].worldX = gp.tileSize*23;
+		gp.monster[i].worldY = gp.tileSize*38;
+		i++;
+		gp.monster[i] = new MON_Slime(gp);
+		gp.monster[i].worldX = gp.tileSize*35;
+		gp.monster[i].worldY = gp.tileSize*39;
+		i++;
+		gp.monster[i] = new MON_Slime(gp);
+		gp.monster[i].worldX = gp.tileSize*36;
+		gp.monster[i].worldY = gp.tileSize*38;
+		i++;
+		gp.monster[i] = new MON_Slime(gp);
+		gp.monster[i].worldX = gp.tileSize*35;
 		gp.monster[i].worldY = gp.tileSize*38;
 		
 		
