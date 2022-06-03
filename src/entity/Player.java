@@ -149,6 +149,8 @@ public class Player extends Entity{
 			collisionOn = false;
 			gp.coll.checkTileCollision(this); // Pass player class as Entity oblject
 			
+			// CHECK INTERACTIVE TILE COLLISION
+			gp.coll.checkEntityCollision(this, gp.iTile);
 			
 			// CHECK OBJECT COLLISION
 			int objIndex = gp.coll.checkObjectCollision(this, true);
@@ -274,6 +276,10 @@ public class Player extends Entity{
 			int monsterIndex = gp.coll.checkEntityCollision(this, gp.monster);
 			damageMonster(monsterIndex, attack);
 			
+			// Check if player is trying to destroy interactive tile
+			int iTileIndex = gp.coll.checkEntityCollision(this, gp.iTile);
+			destroyInteractiveTile(iTileIndex);
+			
 			// After checking collision, restore original data
 			worldX = currentWorldX;
 			worldY = currentWorldY;
@@ -387,6 +393,18 @@ public class Player extends Entity{
 				}
 			}
 		}	
+	}
+	public void destroyInteractiveTile(int i) {
+		if(i != 999 && gp.iTile[i].destructible == true &&
+				gp.iTile[i].isRightTool(this) == true && gp.iTile[i].invincible == false) {
+			
+			gp.iTile[i].playSE();
+			gp.iTile[i].life--;
+			gp.iTile[i].invincible = true;
+			if(gp.iTile[i].life == 0) {
+				gp.iTile[i] = gp.iTile[i].getDestroyedImage();
+			}
+		}
 	}
 	public void checkLvlUp() {
 		

@@ -277,7 +277,6 @@ public class UI {
 		final int frameWidth = gp.tileSize*5;
 		final int frameHeight = (int) (gp.tileSize*10.5);
 		drawSubWindow(frameX, frameY, frameWidth, frameHeight);
-		
 		//  TEXT
 		g2.setColor(Color.WHITE);
 		g2.setFont(g2.getFont().deriveFont(25F));

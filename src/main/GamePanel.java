@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -15,6 +16,7 @@ import javax.swing.JPanel;
 import entity.Entity;
 import entity.Player;
 import tile.TileManager;
+import tile_interactive.InteractiveTile;
 
 public class GamePanel extends JPanel implements Runnable{ // Make a JPanel class with extra functionalities
 	
@@ -54,6 +56,7 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 	public Entity obj[]= new Entity[20]; // 20 slots for objects
 	public Entity npc[] = new Entity[10];
 	public Entity monster[] = new Entity[20];
+	public InteractiveTile iTile[] = new InteractiveTile[50];
 	public ArrayList<Entity> projectileList = new ArrayList<>();
 	ArrayList<Entity> entityList = new ArrayList<>();
 	
@@ -79,7 +82,8 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 		aSetter.setObject();
 		aSetter.setNPC();
 		aSetter.setMonster();
-		//playMusic(0); // Theme Music
+		aSetter.setInteractiveTile();
+		playMusic(0); // Theme Music
 		gameState = titleState;
 	}
 	public void startGameThread() {
@@ -153,7 +157,11 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 				}
 			}
 		}
-		
+		for(int i = 0; i < iTile.length; i++) {
+			if(iTile[i] != null) {
+				iTile[i].update();
+			}
+		}
 	}
 	if (gameState == pauseState){
 		
@@ -163,8 +171,10 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 	public void paintComponent(Graphics g) {
 		
 		super.paintComponent(g);
+		
 		Graphics2D g2 = (Graphics2D)g; // Gives more control over graphics and makes it 2D
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		
 		// DEBUG
 		long drawStart = 0;
 		if(keyH.showDebug == true) {
@@ -181,6 +191,13 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 		else {
 			// TILE
 			tileM.draw(g2);
+			
+			// INTERACTIVE TILE
+			for(int i = 0; i < iTile.length; i++) {
+				if(iTile[i] != null) {
+					iTile[i].draw(g2);
+				}
+			}
 			
 			// ADD ENTITIES TO THE LIST
 			entityList.add(player);
@@ -249,7 +266,6 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 			g2.drawString("Row: " + (player.worldY + player.hitbox.y)/tileSize, x, y); y+=lineHeight;
 			
 			g2.drawString("Draw Time: " + passed, x, y);
-			
 		}
 		g2.dispose();
 	}

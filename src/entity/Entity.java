@@ -140,6 +140,7 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 		gp.coll.checkObjectCollision(this, false);
 		gp.coll.checkEntityCollision(this, gp.npc);
 		gp.coll.checkEntityCollision(this, gp.monster);
+		gp.coll.checkEntityCollision(this, gp.iTile);
 		boolean contactPlayer = gp.coll.checkPlayerCollision(this);
 		
 		if(this.type == type_monster && contactPlayer == true) { // if monster
