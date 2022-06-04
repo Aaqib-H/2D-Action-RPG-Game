@@ -5,6 +5,7 @@ import java.net.URL;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 
 // Java library only supports WAV 16-bit sound files
 
@@ -12,6 +13,9 @@ public class Sound {
 	
 	Clip clip; // Used for audio files
 	URL soundURL[] = new URL[30]; // Used for file path for sounds
+	FloatControl fc;
+	int volumeScale = 3; // Default volume
+	float volume;
 	
 	public Sound() {
 		soundURL[0] = getClass().getResource("/sound/BlueBoyAdventure.wav");
@@ -35,6 +39,8 @@ public class Sound {
 			AudioInputStream ais = AudioSystem.getAudioInputStream(soundURL[i]);
 			clip = AudioSystem.getClip();
 			clip.open(ais);
+			fc = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
+			checkVolume();
 		}
 		catch (Exception e) {
 		}
@@ -51,5 +57,18 @@ public class Sound {
 	
 	public void stop() {
 		clip.stop();
+	}
+	public void checkVolume() {
+		
+		// 6 levels of volume | -80f(0) to 6f(100) FloatControl volume scale
+		switch(volumeScale) {
+		case 0: volume = -80f; break;
+		case 1: volume = -20f; break;
+		case 2: volume = -12f; break;
+		case 3: volume = -5f; break;
+		case 4: volume = 1f; break;
+		case 5: volume = 6f; break;
+		}
+		fc.setValue(volume);
 	}
 }
