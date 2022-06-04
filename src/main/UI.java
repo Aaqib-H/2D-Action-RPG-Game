@@ -494,11 +494,11 @@ public class UI {
 			
 			if(gp.keyH.enterPressed == true) {
 				gp.playSE(10);
-				if(gp.FullScreenOn == false) {
-					gp.FullScreenOn = true;
+				if(gp.fullScreenOn == false) {
+					gp.fullScreenOn = true;
 				}
-				else if(gp.FullScreenOn == true) {
-					gp.FullScreenOn = false;
+				else if(gp.fullScreenOn == true) {
+					gp.fullScreenOn = false;
 				}
 				subState = 1;
 			}
@@ -555,7 +555,7 @@ public class UI {
 		textY = frameY + gp.tileSize*2;
 		g2.setStroke(new BasicStroke(3));
 		g2.drawRect(textX, textY, 24, 24);
-		if(gp.FullScreenOn == true) {
+		if(gp.fullScreenOn == true) {
 			g2.fillRect(textX, textY, 24, 24);
 		}
 		
@@ -571,6 +571,8 @@ public class UI {
 		g2.drawRect(textX, textY, 120, 24);
 		volumeWidth = 24 * gp.se.volumeScale;
 		g2.fillRect(textX, textY, volumeWidth, 24);
+		
+		gp.config.saveConfig(); // Save settings to config file
 	}
 	public void options_fullScreenNotif(int frameX, int frameY) {
 		
@@ -667,6 +669,7 @@ public class UI {
 			if(gp.keyH.enterPressed == true) {
 				subState = 0;
 				gp.gameState = gp.titleState;
+				gp.stopMusic();
 			}
 		}
 		

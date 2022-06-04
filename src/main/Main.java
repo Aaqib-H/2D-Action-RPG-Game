@@ -12,10 +12,14 @@ public class Main {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
 		window.setTitle("Red's Adventure");
-		window.setUndecorated(true); // Full screen
 		
 		GamePanel gamePanel = new GamePanel();
 		window.add(gamePanel);
+		
+		gamePanel.config.loadConfig();
+		if(gamePanel.fullScreenOn == true) {
+			window.setUndecorated(true); // Full screen
+		}
 		
 		window.pack();
 		

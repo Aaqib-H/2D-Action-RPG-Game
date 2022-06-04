@@ -42,7 +42,7 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 	int screenHeight2 = screenHeight;
 	BufferedImage tempScreen;
 	Graphics2D g2;
-	public boolean FullScreenOn = false;
+	public boolean fullScreenOn = false; // Default value
 	
 	// FPS
 	int FPS = 60; 
@@ -57,6 +57,7 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 	public AssetSetter aSetter = new AssetSetter(this);
 	public UI ui = new UI(this);
 	public EventHandler eHandler = new EventHandler(this);
+	Config config = new Config(this);
 	Thread gameThread;
 	
 	
@@ -101,7 +102,9 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 		tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB); //
 		g2 = (Graphics2D)tempScreen.getGraphics();
 		
-		setFullScreen(); // Full Screen
+		if(fullScreenOn == true) {
+			setFullScreen(); // Full Screen
+		}
 	}
 	public void setFullScreen() {
 		
