@@ -169,7 +169,7 @@ public class UI {
 				messageTimer.set(i, counter);
 				messageY += 40;
 				
-				if(messageTimer.get(i) > 120) {
+				if(messageTimer.get(i) > 180) {
 					message.remove(i);
 					messageTimer.remove(i);
 				}
@@ -272,7 +272,7 @@ public class UI {
 	public void drawCharacterScreen() {
 		
 		// CREATE A FRAME
-		final int frameX = gp.tileSize;
+		final int frameX = gp.tileSize*2;
 		final int frameY = gp.tileSize;
 		final int frameWidth = gp.tileSize*5;
 		final int frameHeight = (int) (gp.tileSize*10.5);
@@ -373,7 +373,7 @@ public class UI {
 	}
 	public void drawInventoryScreen() {
 		// INVENTORY WINDOW
-		int frameX = gp.tileSize*9;
+		int frameX = gp.tileSize*12;
 		int frameY = gp.tileSize;
 		int frameWidth = gp.tileSize*6;
 		int frameHeight = gp.tileSize*5;

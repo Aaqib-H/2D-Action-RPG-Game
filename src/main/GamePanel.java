@@ -1,12 +1,14 @@
 package main;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -24,9 +26,9 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 	final int originalTileSize = 16; // 16x16 tile
 	final int scale = 3; // Enlarges tile scale
 	public final int tileSize = originalTileSize * scale; // 48x48 tile
-	public final int maxScreenCol = 16;
+	public final int maxScreenCol = 20;
 	public final int maxScreenRow = 12; // 4:3 Ratio
-	public final int screenWidth = tileSize * maxScreenCol; // 768 pixels
+	public final int screenWidth = tileSize * maxScreenCol; // 960 pixels
 	public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
 	
 	
@@ -34,6 +36,12 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 	public final int maxWorldCol = 50;
 	public final int maxWorldRow = 50;
 	
+	
+	// FULL SCREEN SETTINGS
+	int screenWidth2 = screenWidth;
+	int screenHeight2 = screenHeight;
+	BufferedImage tempScreen;
+	Graphics2D g2;
 	
 	// FPS
 	int FPS = 60; 
@@ -86,6 +94,23 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 		aSetter.setInteractiveTile();
 		playMusic(0); // Theme Music
 		gameState = titleState;
+		
+		// FULL SCREEN SETTINGS
+		tempScreen = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB); //
+		g2 = (Graphics2D)tempScreen.getGraphics();
+		
+		setFullScreen();
+	}
+	public void setFullScreen() {
+		
+		// GET LOCAL SCREEN DEVICE
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice gd = ge.getDefaultScreenDevice();
+		gd.setFullScreenWindow(Main.window);
+		
+		// GET FULLSCREEN SCREEN WIDTH AND HEIGHT
+		screenWidth2 = Main.window.getWidth();
+		screenHeight2 = Main.window.getHeight();
 	}
 	public void startGameThread() {
 		gameThread = new Thread(this); // Instantiate a thread and pass this class to Thread object
@@ -103,8 +128,10 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 			update();
 			
 			// 2 Draw the screen with the updated information
-			repaint(); // Call paint component method
+			//repaint(); // Call paint component method
 			
+			drawToTempScreen(); // Draw everything to bufferedImage
+			drawToScreen(); // Draw bufferedImage to screen
 			
 			try {
 				double remainingTime = nextDrawTime - System.nanoTime(); // Calculate remaining time after performing a loop
@@ -178,11 +205,9 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 	}
 		
 	}
-	public void paintComponent(Graphics g) {
-		
-		super.paintComponent(g);
-		
-		Graphics2D g2 = (Graphics2D)g; // Gives more control over graphics and makes it 2D
+	public void drawToTempScreen() {
+	
+		// ANTI-ALIASING
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
 		// DEBUG
@@ -190,8 +215,6 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 		if(keyH.showDebug == true) {
 			drawStart = System.nanoTime();
 		}
-		
-		
 		
 		// TITLE SCREEN
 		if(gameState == titleState) {
@@ -282,7 +305,12 @@ public class GamePanel extends JPanel implements Runnable{ // Make a JPanel clas
 			
 			g2.drawString("Draw Time: " + passed, x, y);
 		}
-		g2.dispose();
+	}
+	public void drawToScreen() {
+		
+		Graphics g = getGraphics();
+		g.drawImage(tempScreen, 0, 0, screenWidth2, screenHeight2, null);
+		g.dispose();
 	}
 	
 	// SOUND 

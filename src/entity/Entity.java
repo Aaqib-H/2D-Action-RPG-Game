@@ -143,10 +143,10 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 		int speed = generator.getParticleSpeed();
 		int maxLife = generator.getParticleMaxLife();
 		
-		Particle p1 = new Particle(gp, generator, color, size, speed, maxLife, -2, -1); // -1,-1 particle flies towards top-left
-		Particle p2 = new Particle(gp, generator, color, size, speed, maxLife, 2, -1); // 1,-1 particle flies towards top-right
-		Particle p3 = new Particle(gp, generator, color, size, speed, maxLife, -2, 1); // -1,1 particle flies towards down-left
-		Particle p4 = new Particle(gp, generator, color, size, speed, maxLife, 2, 1); // 1,1 particle flies towards down-right
+		Particle p1 = new Particle(gp, target, color, size, speed, maxLife, -2, -1); // -1,-1 particle flies towards top-left
+		Particle p2 = new Particle(gp, target, color, size, speed, maxLife, 2, -1); // 1,-1 particle flies towards top-right
+		Particle p3 = new Particle(gp, target, color, size, speed, maxLife, -2, 1); // -1,1 particle flies towards down-left
+		Particle p4 = new Particle(gp, target, color, size, speed, maxLife, 2, 1); // 1,1 particle flies towards down-right
 		gp.particleList.add(p1);
 		gp.particleList.add(p2);
 		gp.particleList.add(p3);
