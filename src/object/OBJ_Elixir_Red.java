@@ -17,6 +17,7 @@ public class OBJ_Elixir_Red extends Entity{
 		value = 5;
 		down1 = setup("/objects/Elixir_red", gp.tileSize, gp.tileSize);
 		itemDescription = "[ "+name+" ]"+"\nSomething magical.";
+		price = 25;
 	}
 	public void use(Entity entity) {
 		

@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -79,11 +80,14 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	public final int type_pickUp = 7;
 	
 	// ITEM ATTRIBUTES
+	public ArrayList<Entity> inventory = new ArrayList<>();
+	public final int maxInventorySize = 20;
 	public int value;
 	public int attackVal;
 	public int defenseVal;
 	public String itemDescription = "";
 	public int projectileUseCost;
+	public int price;
 	
 	// ENTITY STATUS
 	public Entity(GamePanel gp) {
@@ -193,7 +197,7 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 		}
 		
 		spriteTimer++; // Making the sprite walk
-		if (spriteTimer > 12) { // Change player image every 12 frames
+		if (spriteTimer > 24) { // Change player image every 12 frames
 			if (spriteNum == 1) {
 				spriteNum = 2;
 			}
