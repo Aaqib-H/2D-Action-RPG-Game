@@ -20,7 +20,8 @@ public class MON_Slime extends Entity{
 		
 		type = type_monster;
 		name = "Slime";
-		speed = 1;
+		defaultSpeed = 1;
+		speed = defaultSpeed;
 		maxLife = 4;
 		life = maxLife;
 		attack = 2;
@@ -82,7 +83,14 @@ public class MON_Slime extends Entity{
 			int i = new Random().nextInt(100)+1;
 			if(i > 99 && projectile.alive == false && projShotTimer == 30) {
 				projectile.shoot(worldX, worldY, direction, true, this);
-				gp.projectileList.add(projectile);
+
+				for(int ii = 0; ii < gp.projectile[1].length; ii++) {
+					if(gp.projectile[gp.currentMap][ii] == null) {
+						gp.projectile[gp.currentMap][ii] = projectile;
+						break;
+					}
+				}
+
 				projShotTimer = 0;
 			}
 		}

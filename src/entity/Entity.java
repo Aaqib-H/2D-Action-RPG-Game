@@ -38,6 +38,7 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	public boolean dying = false;
 	boolean hpBarOn = false;
 	public boolean onPath = false;
+	public boolean knockback = false;
 	
 	// TIMERS
 	public int spriteTimer = 0;
@@ -45,11 +46,13 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	public int invincibilityTimer = 0;
 	public int projShotTimer = 0;
 	int dyingTimer = 0;
-	int hpBarTimer;
+	int hpBarTimer = 0;
+	int knockbackTimer = 0;
 	
 	// CHARACTER ATTRIBUTES
 	public String name;
 	public int speed; // Character speed
+	public int defaultSpeed;
 	public int maxLife;
 	public int life;
 	public int maxMana;
@@ -89,6 +92,7 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	public String itemDescription = "";
 	public int projectileUseCost;
 	public int price;
+	public int knockbackPower = 0;
 	
 	// ENTITY STATUS
 	public Entity(GamePanel gp) {
@@ -184,22 +188,49 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	}
 	public void update() {
 		
-		setAction(); // if subclass has same method, it will take priority
-		checkCollision();
-
-		// IF COLLISION IS FALSE, ENTITY CAN MOVE
-		if (collisionOn == false) {
-			switch (direction) {
-			case "up": worldY -= speed; break;
-				
-			case "down": worldY += speed; break;
-				
-			case "left": worldX -= speed; break;
-				
-			case "right": worldX += speed; break;
+		if(knockback == true) {
+			
+			checkCollision();
+			if(collisionOn == true) {
+				knockbackTimer = 0;
+				knockback = false;
+				speed = defaultSpeed;
 			}
+			else if(collisionOn == false) {
 				
+				switch(gp.player.direction) {
+				case "up": worldY -= speed; break;	
+				case "down": worldY += speed; break;		
+				case "left": worldX -= speed; break;		
+				case "right": worldX += speed; break;
+				}
+			}
+			knockbackTimer++;
+			if(knockbackTimer == 10) { // Acts as knock-back distance
+				knockbackTimer = 0;
+				knockback = false;
+				speed = defaultSpeed;
+			}
 		}
+		else {
+			
+			setAction(); // if subclass has same method, it will take priority
+			checkCollision();
+
+			// IF COLLISION IS FALSE, ENTITY CAN MOVE
+			if (collisionOn == false) {
+				switch (direction) {
+				case "up": worldY -= speed; break;
+					
+				case "down": worldY += speed; break;
+					
+				case "left": worldX -= speed; break;
+					
+				case "right": worldX += speed; break;
+				}
+			}
+		}
+		
 		
 		spriteTimer++; // Making the sprite walk
 		if (spriteTimer > 24) { // Change player image every 12 frames

@@ -110,7 +110,7 @@ public class AssetSetter {
 		i++;
 		gp.monster[mapNum][i] = new MON_Slime(gp);
 		gp.monster[mapNum][i].worldX = gp.tileSize*23;
-		gp.monster[mapNum][i].worldY = gp.tileSize*38;
+		gp.monster[mapNum][i].worldY = gp.tileSize*40;
 		i++;
 		gp.monster[mapNum][i] = new MON_Slime(gp);
 		gp.monster[mapNum][i].worldX = gp.tileSize*35;
