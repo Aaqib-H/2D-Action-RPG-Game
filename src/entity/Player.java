@@ -59,7 +59,7 @@ public class Player extends Entity{
 		
 		// PLAYER STATS
 		level = 1;
-		maxLife = 8; // 4 hearts
+		maxLife = 2; // 4 hearts
 		life = maxLife;
 		maxMana = 4;
 		mana = maxMana;
@@ -77,8 +77,21 @@ public class Player extends Entity{
 		attack = getAttackVal(); // Total attack value is determined by strength and weapon
 		defense = getDefenseVal(); // Total defense value is determined by dexterity and shield
 	}
+	public void resetPosition() {
+		
+		worldX = gp.tileSize * 23; // Starting position
+		worldY = gp.tileSize * 21;
+		direction = "right";
+	}
+	public void resetLifeAndMana() {
+		
+		life = maxLife;
+		mana = maxMana;
+		invincible = false;
+	}
 	public void setInventoryItem() {
 		
+		inventory.clear();
 		inventory.add(currentWeapon);
 		inventory.add(currentShield);
 		inventory.add(new OBJ_Key(gp));
@@ -244,6 +257,10 @@ public class Player extends Entity{
 		}
 		if(mana > maxMana) {
 			mana = maxMana;
+		}
+		if(life <= 0) {
+			gp.gameState = gp.gameOverState;
+			gp.playSE(12);
 		}
 	}
 	public void attack() {
