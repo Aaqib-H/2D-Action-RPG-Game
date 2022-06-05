@@ -37,6 +37,7 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	public boolean alive = true;
 	public boolean dying = false;
 	boolean hpBarOn = false;
+	public boolean onPath = false;
 	
 	// TIMERS
 	public int spriteTimer = 0;
@@ -156,6 +157,20 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 		gp.particleList.add(p3);
 		gp.particleList.add(p4);
 	}
+	public void checkCollision() {
+		
+		collisionOn = false;
+		gp.coll.checkTileCollision(this);
+		gp.coll.checkObjectCollision(this, false);
+		gp.coll.checkEntityCollision(this, gp.npc);
+		gp.coll.checkEntityCollision(this, gp.monster);
+		gp.coll.checkEntityCollision(this, gp.iTile);
+		boolean contactPlayer = gp.coll.checkPlayerCollision(this);
+		
+		if(this.type == type_monster && contactPlayer == true) { // if monster
+			damagePlayer(attack);
+		}
+	}
 	public void dropItem(Entity droppedItem) {
 		
 		for(int i = 0; i < gp.obj[1].length; i++) {
@@ -170,18 +185,8 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 	public void update() {
 		
 		setAction(); // if subclass has same method, it will take priority
-		
-		collisionOn = false;
-		gp.coll.checkTileCollision(this);
-		gp.coll.checkObjectCollision(this, false);
-		gp.coll.checkEntityCollision(this, gp.npc);
-		gp.coll.checkEntityCollision(this, gp.monster);
-		gp.coll.checkEntityCollision(this, gp.iTile);
-		boolean contactPlayer = gp.coll.checkPlayerCollision(this);
-		
-		if(this.type == type_monster && contactPlayer == true) { // if monster
-			damagePlayer(attack);
-		}
+		checkCollision();
+
 		// IF COLLISION IS FALSE, ENTITY CAN MOVE
 		if (collisionOn == false) {
 			switch (direction) {
@@ -338,5 +343,81 @@ public class Entity { // Abstract Superclass for players. monsters and NPCs
 			e.printStackTrace();
 		}
 		return image;
+	}
+	public void searchPath(int goalCol, int goalRow) {
+		
+		int startCol = (worldX + hitbox.x) / gp.tileSize;
+		int startRow = (worldY + hitbox.y) / gp.tileSize;
+		
+		gp.pFinder.setNodes(startCol, startRow, goalCol, goalRow);
+		
+		if(gp.pFinder.search() == true) { // If path is found
+			
+			// Next step | worldX & worldY
+			int nextX = gp.pFinder.pathList.get(0).col * gp.tileSize;
+			int nextY = gp.pFinder.pathList.get(0).row * gp.tileSize;
+			
+			// Entity's solidArea position
+			int enLeftX = worldX + hitbox.x;
+			int enRightX = worldX + hitbox.x + hitbox.width;
+			int enTopY = worldY + hitbox.y;
+			int enBottomY = worldY + hitbox.y + hitbox.height;
+			
+			if(enTopY > nextY && enLeftX >= nextX && enRightX < nextX + gp.tileSize) {
+				direction = "up";
+			}
+			else if(enTopY < nextY && enLeftX >= nextX && enRightX < nextX + gp.tileSize) {
+				direction = "down";
+			}
+			else if(enTopY >= nextY && enBottomY < nextY + gp.tileSize) {
+				
+				if(enLeftX > nextX) {
+					direction = "left";
+				}
+				if(enLeftX < nextX) {
+					direction = "right";
+				}
+			}
+			else if(enTopY > nextY && enLeftX > nextX) {
+				
+				direction = "up";
+				checkCollision();
+				if(collisionOn == true) {
+					direction = "left";
+				}
+			}
+			else if(enTopY > nextY && enLeftX < nextX) {
+				direction = "up";
+				checkCollision();
+				if(collisionOn == true) {
+					direction = "right";
+				}
+			}
+			else if(enTopY < nextY && enLeftX > nextX) {
+				
+				direction = "down";
+				checkCollision();
+				if(collisionOn == true) {
+					direction = "left";
+				}
+			}
+			else if(enTopY < nextY && enLeftX < nextX) {
+				
+				direction = "down";
+				checkCollision();
+				if(collisionOn == true) {
+					direction = "right";
+				}
+			}
+			
+			// if entity reaches the goal, stop search
+			// Disable below lines to make the player as the goal
+//			int nextCol = gp.pFinder.pathList.get(0).col;
+//			int nextRow = gp.pFinder.pathList.get(0).row;
+//			
+//			if(nextCol == goalCol && nextRow == goalRow) {
+//				onPath = false;
+//			}
+		}
 	}
 }

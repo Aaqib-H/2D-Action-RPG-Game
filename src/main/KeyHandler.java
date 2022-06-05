@@ -132,6 +132,7 @@ public class KeyHandler implements KeyListener{
 		// DEBUG
 		if(code == KeyEvent.VK_T) {
 			if(showDebug == false) {
+				gp.tileM.drawPath = true;
 				showDebug = true;
 			}
 			else if (showDebug == true) {

@@ -47,32 +47,50 @@ public class NPC_OldMan extends Entity {
 	
 	public void setAction() { // Set character behavior / AI
 		
-		actionIntervalTimer++;
-		
-		if(actionIntervalTimer == 120) { // Interval is 120 frames or 2 seconds
-			Random rnd = new Random();
+		// Go to location
+		if(onPath == true) {
 			
-			int i = rnd.nextInt(100)+1; // Get random number from 1-100
 			
-			// Randomize movement
-			if(i <= 25) {
-				direction = "up";
+			// Go to specific location
+//			int goalCol = 12;
+//			int goalRow = 9;
+			
+			//Follow player
+			int goalCol = (gp.player.worldX + gp.player.hitbox.x) / gp.tileSize;
+			int goalRow = (gp.player.worldY + gp.player.hitbox.y) / gp.tileSize;
+			
+			searchPath(goalCol, goalRow);
+		}
+		else {
+			actionIntervalTimer++;
+			
+			if(actionIntervalTimer == 120) { // Interval is 120 frames or 2 seconds
+				Random rnd = new Random();
+				
+				int i = rnd.nextInt(100)+1; // Get random number from 1-100
+				
+				// Randomize movement
+				if(i <= 25) {
+					direction = "up";
+				}
+				if(i > 25 && i <= 50) {
+					direction = "down";
+				}
+				if(i > 50 && i <= 75) {
+					direction = "left";
+				}
+				if(i > 75 && i <= 100 ) {
+					direction = "right";
+				}
+				actionIntervalTimer = 0;
 			}
-			if(i > 25 && i <= 50) {
-				direction = "down";
-			}
-			if(i > 50 && i <= 75) {
-				direction = "left";
-			}
-			if(i > 75 && i <= 100 ) {
-				direction = "right";
-			}
-			actionIntervalTimer = 0;
 		}
 	}
 	
 	public void speak() {
 		
 		super.speak();
+		
+		onPath = true;
 	}
 }
