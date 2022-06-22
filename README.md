@@ -9,9 +9,15 @@ Requirements:
 Controls:
 
 [WASD] - Move
+
 [Enter] - Attack/Interact
+
 [Shift] - Shoot
+
 [C] - Character Screen
+
 [P] - Pause
+
 [T] - Debug
+
 [Esc] - To go Back in Trading Screen
