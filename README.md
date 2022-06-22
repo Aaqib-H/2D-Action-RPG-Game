@@ -14,4 +14,4 @@ Controls:
 [C] - Character Screen
 [P] - Pause
 [T] - Debug
-[Esc] - to go Back in Trading Screen
+[Esc] - To go Back in Trading Screen
